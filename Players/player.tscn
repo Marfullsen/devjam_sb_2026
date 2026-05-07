@@ -1,0 +1,138 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqpdwn6vexrv5"]
+
+[sub_resource type="GDScript" id="GDScript_qe1pe"]
+script/source = "extends CharacterBody3D
+
+@export var speed: float = 6.0
+@export var climb_speed: float = 5.0
+@export var gravity: float = 9.8
+@export var mouse_sensitivity: float = 0.002
+@export var jump_force: float = 4.8
+@export var stick_to_wall_force: float = 25.0
+@export var climb_friction: float = 15.0     # ← Nueva: fricción al no mover
+
+var is_climbing: bool = false
+var climb_normal: Vector3 = Vector3.UP
+
+@onready var neck: Node3D = $CollisionShape3D/Neck
+@onready var climb_ray: RayCast3D = $ClimbRay_foot
+
+var body_rotation_y: float = 0.0
+var camera_rotation_x: float = 0.0
+
+func _ready() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if climb_ray:
+		climb_ray.enabled = true
+		climb_ray.target_position = Vector3(0, 0, -2.8)
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		var horiz = -event.relative.x * mouse_sensitivity
+		var vert = -event.relative.y * mouse_sensitivity
+		
+		camera_rotation_x += vert
+		camera_rotation_x = clamp(camera_rotation_x, -deg_to_rad(85), deg_to_rad(85))
+		
+		if is_climbing:
+			if neck:
+				neck.rotation.y += horiz
+		else:
+			body_rotation_y += horiz
+			rotation.y = body_rotation_y
+			if neck:
+				neck.rotation.y = 0
+		
+		if neck:
+			neck.rotation.x = camera_rotation_x
+
+
+func _physics_process(delta: float) -> void:
+	is_climbing = Input.is_action_pressed(\"Trepar\") and climb_ray and climb_ray.is_colliding()
+	
+	if is_climbing:
+		climb_normal = climb_ray.get_collision_normal()
+	
+	if is_climbing:
+		_climbing_movement(delta)
+	else:
+		_normal_movement(delta)
+	
+	move_and_slide()
+
+
+func _climbing_movement(delta: float) -> void:
+	var camera_forward = -neck.global_transform.basis.z.normalized()
+	
+	var right = climb_normal.cross(camera_forward).normalized()
+	if right.dot(neck.global_transform.basis.x) < 0:
+		right = -right
+	
+	var up_on_wall = right.cross(climb_normal).normalized()
+	
+	var input = Input.get_vector(\"Izquierda\", \"Derecha\", \"Adelante\", \"Atras\")
+	
+	# Movimiento principal
+	velocity = right * input.x * climb_speed + up_on_wall * input.y * climb_speed
+	
+	# Solo movimiento extra si se presiona W o S
+	if Input.is_action_pressed(\"Adelante\"):
+		velocity += climb_normal * climb_speed * 0.8
+	elif Input.is_action_pressed(\"Atras\"):
+		velocity -= climb_normal * climb_speed * 0.6
+	
+	# Fuerza de pegado (solo lateral, menos hacia arriba)
+	velocity += -climb_normal * stick_to_wall_force * 0.7
+	
+	# === FRICCIÓN cuando no se está moviendo ===
+	if input.length() < 0.1:
+		velocity = velocity.lerp(Vector3.ZERO, climb_friction * delta)
+
+
+func _normal_movement(delta: float) -> void:
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	
+	var input_dir = Input.get_vector(\"Izquierda\", \"Derecha\", \"Adelante\", \"Atras\")
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
+	if direction.length() > 0:
+		velocity.x = direction.x * speed
+		velocity.z = direction.z * speed
+	else:
+		velocity.x = move_toward(velocity.x, 0, 25)
+		velocity.z = move_toward(velocity.z, 0, 25)
+	
+	if Input.is_action_just_pressed(\"Saltar\") and is_on_floor():
+		velocity.y = jump_force
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fq5u1"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qe1pe"]
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+script = SubResource("GDScript_qe1pe")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.516014, 0)
+shape = SubResource("CapsuleShape3D_fq5u1")
+debug_color = Color(0.95316, 0, 0.564501, 1)
+
+[node name="Neck" type="Node3D" parent="CollisionShape3D"]
+
+[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck"]
+transform = Transform3D(0.999964, 0, 0.00842986, 0, 1, 0, -0.00842986, 0, 0.999964, -0.00930429, 0.84282, -0.188889)
+fov = 89.7582
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.780578, 0, 0, 0, 0.888841, 0, 0, 0, 0.772459, -0.00221679, 0.494685, 4.52995e-06)
+mesh = SubResource("CapsuleMesh_qe1pe")
+
+[node name="ClimbRay_foot" type="RayCast3D" parent="."]
+transform = Transform3D(1, 1.74846e-07, -1.74846e-07, -1.74846e-07, 1, 1.74846e-07, 1.74846e-07, -1.74846e-07, 1, 0, 0.197582, 0.134992)
+target_position = Vector3(0, 0, -1.5)
