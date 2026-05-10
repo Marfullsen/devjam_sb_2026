@@ -1,4 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqpdwn6vexrv5"]
+[gd_scene format=3 uid="uid://dqpdwn6vexrv5"]
+
+[ext_resource type="Material" uid="uid://o7na8drc2je2" path="res://addons/verlet_rope_4_gd/materials/rope_default.material" id="1_fq5u1"]
+[ext_resource type="Script" uid="uid://uufn4vv1kbmv" path="res://addons/verlet_rope_4_gd/verlet_rope.gd" id="2_dju3o"]
 
 [sub_resource type="GDScript" id="GDScript_qe1pe"]
 script/source = "extends CharacterBody3D
@@ -114,25 +117,37 @@ height = 1.8
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qe1pe"]
 
-[node name="Player" type="CharacterBody3D"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_k6ps1"]
+resource_local_to_scene = true
+metadata/creation_stamp = 4115165945130
+
+[node name="Player" type="CharacterBody3D" unique_id=1215139575]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
 script = SubResource("GDScript_qe1pe")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1311804934]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.516014, 0)
 shape = SubResource("CapsuleShape3D_fq5u1")
 debug_color = Color(0.95316, 0, 0.564501, 1)
 
-[node name="Neck" type="Node3D" parent="CollisionShape3D"]
+[node name="Neck" type="Node3D" parent="CollisionShape3D" unique_id=928909906]
 
-[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck"]
-transform = Transform3D(0.999964, 0, 0.00842986, 0, 1, 0, -0.00842986, 0, 0.999964, -0.00930429, 0.84282, -0.188889)
-fov = 89.7582
+[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck" unique_id=634873448]
+transform = Transform3D(0.9999645, 0, 0.0084298635, 0, 1, 0, -0.0084298635, 0, 0.9999645, -0.00930429, 1.2268678, 2.230763)
+fov = 89.755035
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=267782562]
 transform = Transform3D(0.780578, 0, 0, 0, 0.888841, 0, 0, 0, 0.772459, -0.00221679, 0.494685, 4.52995e-06)
 mesh = SubResource("CapsuleMesh_qe1pe")
 
-[node name="ClimbRay_foot" type="RayCast3D" parent="."]
+[node name="ClimbRay_foot" type="RayCast3D" parent="." unique_id=190020647]
 transform = Transform3D(1, 1.74846e-07, -1.74846e-07, -1.74846e-07, 1, 1.74846e-07, 1.74846e-07, -1.74846e-07, 1, 0, 0.197582, 0.134992)
 target_position = Vector3(0, 0, -1.5)
+
+[node name="VerletRope" type="MeshInstance3D" parent="." unique_id=1191334712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30033827, 0.66291845, 0.17071587)
+material_override = ExtResource("1_fq5u1")
+mesh = SubResource("ImmediateMesh_k6ps1")
+script = ExtResource("2_dju3o")
+dynamic_collision_mask = 1
+metadata/_custom_type_script = "uid://uufn4vv1kbmv"
