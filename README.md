@@ -218,6 +218,7 @@ Consulta la página de [Problemas](./issues) para más detalles y reportar error
 
 - [Motor Godot](https://godotengine.org/)
 - [Afiche de la DevJam en Instagram](https://www.instagram.com/p/DYFWJDXo1N6/) – Evento organizado por el instituto.
+- Bases del concurso DevJam: [2026_CITT.pdf](./docs/pdf/DevJam%202026_CITT.pdf)
 - Página en itch.io: PRONTO!
 
 ---
