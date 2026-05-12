@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://70w0kdr2ib02"]
+[gd_scene load_steps=14 format=3 uid="uid://70w0kdr2ib02"]
 
 [ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="1_1eot7"]
 [ext_resource type="Texture2D" uid="uid://bqnlhg3uhfvj1" path="res://Textures/Pasto.jpg" id="1_46we1"]
@@ -28,47 +28,47 @@ albedo_texture = ExtResource("4_5h80n")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5h80n"]
 
-[node name="Mapa" type="Node3D" unique_id=123238190]
+[node name="Mapa" type="Node3D"]
 
-[node name="piso_Bosque" type="StaticBody3D" parent="." unique_id=434667691]
+[node name="piso_Bosque" type="StaticBody3D" parent="."]
 transform = Transform3D(1.53303, 0, 0, 0, 0.998178, 0, 0, 0, 1.44933, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="piso_Bosque" unique_id=1941814075]
-transform = Transform3D(25.078897, 0, 0, 0, 1.00189, 0, 0, 0, 24.218, 11.04609, -0.023823276, 0.011969869)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="piso_Bosque"]
+transform = Transform3D(25.0789, 0, 0, 0, 1.00189, 0, 0, 0, 24.218, 11.0461, -0.0238233, 0.0119699)
 material_override = SubResource("StandardMaterial3D_a24vh")
 mesh = SubResource("PlaneMesh_4cnpp")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="piso_Bosque" unique_id=725959070]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="piso_Bosque"]
 transform = Transform3D(51.0369, 0, 0, 0, 1, 0, 0, 0, 47.8703, 10.9628, -0.375991, 0)
 shape = SubResource("BoxShape3D_1eot7")
 debug_color = Color(0, 0.466667, 0.45098, 1)
 
-[node name="Level_1" type="StaticBody3D" parent="." unique_id=1993643309 groups=["escalable"]]
+[node name="Level_1" type="StaticBody3D" parent="." groups=["escalable"]]
 transform = Transform3D(0.941194, -0.337867, 0, 0.337867, 0.941194, 0, 0, 0, 1, 90.1615, 85.0998, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Level_1" unique_id=1840062416]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level_1"]
 transform = Transform3D(1.85249, -1.37025, 0, 2.07949, 1.22068, 0, 0, 0, 77.3568, 20.2054, 22.6888, 0)
 material_override = SubResource("StandardMaterial3D_wb7e6")
 mesh = SubResource("BoxMesh_1eot7")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Level_1" unique_id=1238045413]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level_1"]
 transform = Transform3D(1.85249, -1.37025, 0, 2.07949, 1.22068, 0, 0, 0, 77.3568, 20.2054, 22.6888, 0)
 shape = SubResource("BoxShape3D_ejyeh")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1737923481]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=890948497]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.741191, 0.671294, 0, -0.671294, 0.741191, 0, 11.9162, 21.1451)
 
-[node name="Player" parent="." unique_id=153601403 instance=ExtResource("1_1eot7")]
-transform = Transform3D(0.0593237, 0, -0.998239, 0, 1, 0, 0.998239, 0, 0.0593237, 0, 0.52, 0)
+[node name="Player" parent="." instance=ExtResource("1_1eot7")]
+transform = Transform3D(0.0593237, 0, -0.998239, 0, 1, 0, 0.998239, 0, 0.0593237, 0, 3.40359, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1164387916 groups=["escalable"]]
+[node name="StaticBody3D" type="StaticBody3D" parent="." groups=["escalable"]]
 transform = Transform3D(12.3892, 0, 0, 0, 27.244, 0, 0, 0, 1, 0, 13.3686, -6.47312)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1354625397]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 material_override = SubResource("StandardMaterial3D_chvf1")
 mesh = SubResource("BoxMesh_46we1")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=623507190]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_5h80n")
