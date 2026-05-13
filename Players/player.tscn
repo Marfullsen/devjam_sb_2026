@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqpdwn6vexrv5"]
+[gd_scene format=3 uid="uid://dqpdwn6vexrv5"]
 
 [ext_resource type="Material" uid="uid://o7na8drc2je2" path="res://addons/verlet_rope_4_gd/materials/rope_default.material" id="1_fq5u1"]
-[ext_resource type="Script" uid="uid://datuheb40pql" path="res://addons/verlet_rope_4_gd/verlet_rope.gd" id="2_dju3o"]
+[ext_resource type="Script" uid="uid://cwyp87qwntob" path="res://addons/verlet_rope_4_gd/verlet_rope.gd" id="2_dju3o"]
 
 [sub_resource type="GDScript" id="GDScript_qe1pe"]
 script/source = "extends CharacterBody3D
@@ -28,10 +28,19 @@ var climb_normal: Vector3 = Vector3.UP
 var body_rotation_y: float = 0.0
 var camera_rotation_x: float = 0.0
 
+@onready var camara = $CollisionShape3D/Neck/Camera3D
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(name.to_int())
 
 func _ready() -> void:
-
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	camara.current = is_multiplayer_authority()
+	
+	if Input.is_action_just_pressed(\"quit\"):
+		$\"../\".exit_game(name.to_int())
+		get_tree().quit()
+	
+	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 	if climb_ray:
 
@@ -243,34 +252,45 @@ height = 1.8
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_fq5u1"]
 resource_local_to_scene = true
-metadata/creation_stamp = 2142853217191
+metadata/creation_stamp = 4692688050300
 
-[node name="Player" type="CharacterBody3D"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_dju3o"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=285009334]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
 script = SubResource("GDScript_qe1pe")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=600213620]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.516014, 0)
 shape = SubResource("CapsuleShape3D_fq5u1")
 debug_color = Color(0.95316, 0, 0.564501, 1)
 
-[node name="Neck" type="Node3D" parent="CollisionShape3D"]
+[node name="Neck" type="Node3D" parent="CollisionShape3D" unique_id=1350031552]
 
-[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck"]
+[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck" unique_id=1890611577]
 transform = Transform3D(0.999964, 0, 0.00842986, 0, 1, 0, -0.00842986, 0, 0.999964, -0.00930429, 1.22687, 2.23076)
 fov = 89.755
 
-[node name="ClimbRay_foot" type="RayCast3D" parent="CollisionShape3D/Neck"]
+[node name="ClimbRay_foot" type="RayCast3D" parent="CollisionShape3D/Neck" unique_id=1922241490]
 transform = Transform3D(1, 1.74846e-07, -1.74846e-07, -1.74846e-07, 1, 1.74846e-07, 1.74846e-07, -1.74846e-07, 1, 0, -0.318432, 0.134992)
 target_position = Vector3(0, 0, -1.5)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1303318768]
 transform = Transform3D(0.780578, 0, 0, 0, 0.888841, 0, 0, 0, 0.772459, -0.00221679, 0.494685, 4.52995e-06)
 mesh = SubResource("CapsuleMesh_qe1pe")
 
-[node name="VerletRope" type="MeshInstance3D" parent="."]
+[node name="VerletRope" type="MeshInstance3D" parent="." unique_id=1532152717]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300338, 0.662918, 0.170716)
 material_override = ExtResource("1_fq5u1")
 mesh = SubResource("ImmediateMesh_fq5u1")
 script = ExtResource("2_dju3o")
 dynamic_collision_mask = 1
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1322005913]
+replication_config = SubResource("SceneReplicationConfig_dju3o")
