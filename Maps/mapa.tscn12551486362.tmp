@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://70w0kdr2ib02"]
+
+[ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="1_1eot7"]
+[ext_resource type="Texture2D" uid="uid://bqnlhg3uhfvj1" path="res://Textures/Pasto.jpg" id="1_46we1"]
+[ext_resource type="Script" uid="uid://cvky7f4ov0alk" path="res://Maps/mapa.gd" id="1_a24vh"]
+[ext_resource type="Texture2D" uid="uid://dj7df2tbaedy4" path="res://Textures/Montaña.jpg" id="2_5h80n"]
+[ext_resource type="Texture2D" uid="uid://cftikhkoq2eaf" path="res://Textures/pared escalada.jpg" id="4_5h80n"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a24vh"]
+albedo_texture = ExtResource("1_46we1")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4cnpp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1eot7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wb7e6"]
+albedo_texture = ExtResource("2_5h80n")
+
+[sub_resource type="BoxMesh" id="BoxMesh_1eot7"]
+size = Vector3(90, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ejyeh"]
+size = Vector3(90, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chvf1"]
+albedo_texture = ExtResource("4_5h80n")
+
+[sub_resource type="BoxMesh" id="BoxMesh_46we1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5h80n"]
+
+[node name="Mapa" type="Node3D" unique_id=402837320]
+script = ExtResource("1_a24vh")
+player_scene = ExtResource("1_1eot7")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=486533274]
+
+[node name="Host" type="Button" parent="CanvasLayer" unique_id=1954397332]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Host"
+
+[node name="Join" type="Button" parent="CanvasLayer" unique_id=380604191]
+offset_top = 31.0
+offset_right = 38.0
+offset_bottom = 62.0
+text = "Join"
+
+[node name="piso_Bosque" type="StaticBody3D" parent="." unique_id=708225939]
+transform = Transform3D(1.53303, 0, 0, 0, 0.998178, 0, 0, 0, 1.44933, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="piso_Bosque" unique_id=1257249902]
+transform = Transform3D(25.0789, 0, 0, 0, 1.00189, 0, 0, 0, 24.218, 11.0461, -0.0238233, 0.0119699)
+material_override = SubResource("StandardMaterial3D_a24vh")
+mesh = SubResource("PlaneMesh_4cnpp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="piso_Bosque" unique_id=1875845748]
+transform = Transform3D(51.0369, 0, 0, 0, 1, 0, 0, 0, 47.8703, 10.9628, -0.375991, 0)
+shape = SubResource("BoxShape3D_1eot7")
+debug_color = Color(0, 0.466667, 0.45098, 1)
+
+[node name="Level_1" type="StaticBody3D" parent="." unique_id=1303748475 groups=["escalable"]]
+transform = Transform3D(0.941194, -0.337867, 0, 0.337867, 0.941194, 0, 0, 0, 1, 90.1615, 85.0998, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level_1" unique_id=803923674]
+transform = Transform3D(1.85249, -1.37025, 0, 2.07949, 1.22068, 0, 0, 0, 77.3568, 20.2054, 22.6888, 0)
+material_override = SubResource("StandardMaterial3D_wb7e6")
+mesh = SubResource("BoxMesh_1eot7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level_1" unique_id=492549890]
+transform = Transform3D(1.85249, -1.37025, 0, 2.07949, 1.22068, 0, 0, 0, 77.3568, 20.2054, 22.6888, 0)
+shape = SubResource("BoxShape3D_ejyeh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=73827701]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=921739452]
+transform = Transform3D(1, 0, 0, 0, 0.741191, 0.671294, 0, -0.671294, 0.741191, 0, 11.9162, 21.1451)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=670100422 groups=["escalable"]]
+transform = Transform3D(12.3892, 0, 0, 0, 27.244, 0, 0, 0, 1, 0, 13.3686, -6.47312)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=836999914]
+material_override = SubResource("StandardMaterial3D_chvf1")
+mesh = SubResource("BoxMesh_46we1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1471760507]
+shape = SubResource("BoxShape3D_5h80n")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=358548013]
+_spawnable_scenes = PackedStringArray("uid://dqpdwn6vexrv5")
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="CanvasLayer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CanvasLayer/Join" to="." method="_on_join_pressed"]
