@@ -22,6 +22,10 @@ size = Vector3(90, 1, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ejyeh"]
 size = Vector3(90, 1, 1)
 
+[sub_resource type="Environment" id="Environment_a24vh"]
+background_mode = 1
+background_color = Color(0.59505266, 0.89201206, 0.9908077, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chvf1"]
 albedo_texture = ExtResource("4_5h80n")
 
@@ -34,6 +38,11 @@ script = ExtResource("1_a24vh")
 player_scene = ExtResource("1_1eot7")
 
 [node name="PantallaInicio" type="CanvasLayer" parent="." unique_id=486533274]
+
+[node name="ImagenFondo" type="TextureRect" parent="PantallaInicio" unique_id=165811913]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_5h80n")
 
 [node name="Control" type="Control" parent="PantallaInicio" unique_id=1886113197]
 layout_mode = 3
@@ -57,8 +66,9 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="PantallaInicio/Control/VBoxContainer" unique_id=1355862497]
+[node name="Titulo" type="Label" parent="PantallaInicio/Control/VBoxContainer" unique_id=1355862497]
 layout_mode = 2
+theme_override_font_sizes/font_size = 70
 text = "Climb Together"
 
 [node name="Host" type="Button" parent="PantallaInicio/Control/VBoxContainer" unique_id=1954397332]
@@ -95,6 +105,7 @@ transform = Transform3D(1.85249, -1.37025, 0, 2.07949, 1.22068, 0, 0, 0, 77.3568
 shape = SubResource("BoxShape3D_ejyeh")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=73827701]
+environment = SubResource("Environment_a24vh")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=921739452]
 transform = Transform3D(1, 0, 0, 0, 0.741191, 0.671294, 0, -0.671294, 0.741191, 0, 11.9162, 21.1451)

@@ -80,3 +80,4 @@ quit={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.58513796, 0.7534583, 0.92544425, 1)
