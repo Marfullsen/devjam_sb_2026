@@ -243,7 +243,7 @@ height = 1.8
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_fq5u1"]
 resource_local_to_scene = true
-metadata/creation_stamp = 2142853217191
+metadata/creation_stamp = 2135118920596
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
@@ -269,7 +269,7 @@ transform = Transform3D(0.780578, 0, 0, 0, 0.888841, 0, 0, 0, 0.772459, -0.00221
 mesh = SubResource("CapsuleMesh_qe1pe")
 
 [node name="VerletRope" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300338, 0.662918, 0.170716)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0832429, 0.531855, 0.170716)
 material_override = ExtResource("1_fq5u1")
 mesh = SubResource("ImmediateMesh_fq5u1")
 script = ExtResource("2_dju3o")
