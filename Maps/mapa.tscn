@@ -1,6 +1,5 @@
-[gd_scene format=3 uid="uid://70w0kdr2ib02"]
+[gd_scene load_steps=15 format=3 uid="uid://70w0kdr2ib02"]
 
-[ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="1_1eot7"]
 [ext_resource type="Texture2D" uid="uid://bqnlhg3uhfvj1" path="res://Textures/Pasto.jpg" id="1_46we1"]
 [ext_resource type="Script" uid="uid://cvky7f4ov0alk" path="res://Maps/mapa.gd" id="1_a24vh"]
 [ext_resource type="Texture2D" uid="uid://dj7df2tbaedy4" path="res://Textures/Montaña.jpg" id="2_5h80n"]
@@ -24,7 +23,7 @@ size = Vector3(90, 1, 1)
 
 [sub_resource type="Environment" id="Environment_a24vh"]
 background_mode = 1
-background_color = Color(0.59505266, 0.89201206, 0.9908077, 1)
+background_color = Color(0.595053, 0.892012, 0.990808, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chvf1"]
 albedo_texture = ExtResource("4_5h80n")
@@ -33,18 +32,17 @@ albedo_texture = ExtResource("4_5h80n")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5h80n"]
 
-[node name="Mapa" type="Node3D" unique_id=402837320]
+[node name="Mapa" type="Node3D"]
 script = ExtResource("1_a24vh")
-player_scene = ExtResource("1_1eot7")
 
-[node name="PantallaInicio" type="CanvasLayer" parent="." unique_id=486533274]
+[node name="PantallaInicio" type="CanvasLayer" parent="."]
 
-[node name="ImagenFondo" type="TextureRect" parent="PantallaInicio" unique_id=165811913]
+[node name="ImagenFondo" type="TextureRect" parent="PantallaInicio"]
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("2_5h80n")
 
-[node name="Control" type="Control" parent="PantallaInicio" unique_id=1886113197]
+[node name="Control" type="Control" parent="PantallaInicio"]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -57,7 +55,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 6
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control" unique_id=1794318852]
+[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 2.95
@@ -66,61 +64,61 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Titulo" type="Label" parent="PantallaInicio/Control/VBoxContainer" unique_id=1355862497]
+[node name="Titulo" type="Label" parent="PantallaInicio/Control/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 70
 text = "Climb Together"
 
-[node name="Host" type="Button" parent="PantallaInicio/Control/VBoxContainer" unique_id=1954397332]
+[node name="Host" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
 layout_mode = 2
 text = "Host"
 
-[node name="Join" type="Button" parent="PantallaInicio/Control/VBoxContainer" unique_id=380604191]
+[node name="Join" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
 layout_mode = 2
 text = "Join"
 
-[node name="piso_Bosque" type="StaticBody3D" parent="." unique_id=708225939]
+[node name="piso_Bosque" type="StaticBody3D" parent="."]
 transform = Transform3D(1.53303, 0, 0, 0, 0.998178, 0, 0, 0, 1.44933, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="piso_Bosque" unique_id=1257249902]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="piso_Bosque"]
 transform = Transform3D(25.0789, 0, 0, 0, 1.00189, 0, 0, 0, 24.218, 11.0461, -0.0238233, 0.0119699)
 material_override = SubResource("StandardMaterial3D_a24vh")
 mesh = SubResource("PlaneMesh_4cnpp")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="piso_Bosque" unique_id=1875845748]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="piso_Bosque"]
 transform = Transform3D(51.0369, 0, 0, 0, 1, 0, 0, 0, 47.8703, 10.9628, -0.375991, 0)
 shape = SubResource("BoxShape3D_1eot7")
 debug_color = Color(0, 0.466667, 0.45098, 1)
 
-[node name="Level_1" type="StaticBody3D" parent="." unique_id=1303748475 groups=["escalable"]]
+[node name="Level_1" type="StaticBody3D" parent="." groups=["escalable"]]
 transform = Transform3D(0.941194, -0.337867, 0, 0.337867, 0.941194, 0, 0, 0, 1, 90.1615, 85.0998, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Level_1" unique_id=803923674]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level_1"]
 transform = Transform3D(1.85249, -1.37025, 0, 2.07949, 1.22068, 0, 0, 0, 77.3568, 20.2054, 22.6888, 0)
 material_override = SubResource("StandardMaterial3D_wb7e6")
 mesh = SubResource("BoxMesh_1eot7")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Level_1" unique_id=492549890]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level_1"]
 transform = Transform3D(1.85249, -1.37025, 0, 2.07949, 1.22068, 0, 0, 0, 77.3568, 20.2054, 22.6888, 0)
 shape = SubResource("BoxShape3D_ejyeh")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=73827701]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_a24vh")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=921739452]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.741191, 0.671294, 0, -0.671294, 0.741191, 0, 11.9162, 21.1451)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=670100422 groups=["escalable"]]
+[node name="StaticBody3D" type="StaticBody3D" parent="." groups=["escalable"]]
 transform = Transform3D(12.3892, 0, 0, 0, 27.244, 0, 0, 0, 1, 0, 13.3686, -6.47312)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=836999914]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 material_override = SubResource("StandardMaterial3D_chvf1")
 mesh = SubResource("BoxMesh_46we1")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1471760507]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_5h80n")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=358548013]
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dqpdwn6vexrv5")
 spawn_path = NodePath("..")
 

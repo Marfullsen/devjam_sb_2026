@@ -16,12 +16,25 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Climb Together"
 run/main_scene="uid://70w0kdr2ib02"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/verlet_rope_4_gd/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Maps/": "red",
+"res://Players/": "blue",
+"res://Terrenos/": "green",
+"res://Textures/": "pink"
+}
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 
@@ -80,4 +93,4 @@ quit={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(0.58513796, 0.7534583, 0.92544425, 1)
+environment/defaults/default_clear_color=Color(0.585138, 0.753458, 0.925444, 1)
