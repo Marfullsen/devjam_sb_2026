@@ -21,7 +21,7 @@ config/icon="res://icon.svg"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/verlet_rope_4_gd/plugin.cfg")
+enabled=PackedStringArray()
 
 [file_customization]
 

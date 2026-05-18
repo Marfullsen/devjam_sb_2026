@@ -1,9 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://70w0kdr2ib02"]
+[gd_scene load_steps=18 format=3 uid="uid://70w0kdr2ib02"]
 
 [ext_resource type="Texture2D" uid="uid://bqnlhg3uhfvj1" path="res://Textures/Pasto.jpg" id="1_46we1"]
 [ext_resource type="Script" uid="uid://cvky7f4ov0alk" path="res://Maps/mapa.gd" id="1_a24vh"]
 [ext_resource type="Texture2D" uid="uid://dj7df2tbaedy4" path="res://Textures/Montaña.jpg" id="2_5h80n"]
+[ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="2_a24vh"]
 [ext_resource type="Texture2D" uid="uid://cftikhkoq2eaf" path="res://Textures/pared escalada.jpg" id="4_5h80n"]
+[ext_resource type="PackedScene" uid="uid://jqlhs84pbh3o" path="res://Terrenos/rock_11.glb" id="4_a24vh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a24vh"]
 albedo_texture = ExtResource("1_46we1")
@@ -32,8 +34,12 @@ albedo_texture = ExtResource("4_5h80n")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5h80n"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_wb7e6"]
+size = Vector3(0.974609, 1.67761, 1.16712)
+
 [node name="Mapa" type="Node3D"]
 script = ExtResource("1_a24vh")
+player_scene = ExtResource("2_a24vh")
 
 [node name="PantallaInicio" type="CanvasLayer" parent="."]
 
@@ -121,6 +127,76 @@ shape = SubResource("BoxShape3D_5h80n")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dqpdwn6vexrv5")
 spawn_path = NodePath("..")
+
+[node name="rock_11" parent="." instance=ExtResource("4_a24vh")]
+transform = Transform3D(0.999575, -0.0291429, 0, 0.0291429, 0.999575, 0, 0, 0, 1, 54.1213, 0.337222, 14.5845)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_11"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rock_11/StaticBody3D" groups=["escalable"]]
+transform = Transform3D(6.3742, 0, 0, 0, 1.89134, -4.45801, 0, 1.70447, 4.94678, 0.630383, 4.14352, -1.63334)
+shape = SubResource("BoxShape3D_wb7e6")
+debug_color = Color(0.982698, 0.000100304, 0.770091, 0.42)
+
+[node name="rock_12" parent="." instance=ExtResource("4_a24vh")]
+transform = Transform3D(0.824373, 0.566047, 0, -0.566047, 0.824373, 0, 0, 0, 1, 60.2828, 18.6628, 3.87511)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_12"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rock_12/StaticBody3D" groups=["escalable"]]
+transform = Transform3D(6.3742, 0, 0, 0, 1.89134, -4.45801, 0, 1.70447, 4.94678, 0.630383, 4.14352, -1.63334)
+shape = SubResource("BoxShape3D_wb7e6")
+debug_color = Color(0.982698, 0.000100304, 0.770091, 0.42)
+
+[node name="rock_13" parent="." instance=ExtResource("4_a24vh")]
+transform = Transform3D(-0.192979, -0.981203, -0.000599955, 0.981202, -0.192978, -0.00154667, 0.00140182, -0.000887154, 0.999999, 64.4761, 16.198, -5.68768)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_13"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rock_13/StaticBody3D" groups=["escalable"]]
+transform = Transform3D(6.3742, 0, 0, 0, 1.89134, -4.45801, 0, 1.70447, 4.94678, 0.630383, 4.14352, -1.63334)
+shape = SubResource("BoxShape3D_wb7e6")
+debug_color = Color(0.982698, 0.000100304, 0.770091, 0.42)
+
+[node name="rock_14" parent="." instance=ExtResource("4_a24vh")]
+transform = Transform3D(0.999575, -0.0291429, 0, 0.0291429, 0.999575, 0, 0, 0, 1, 54.1213, 0.337222, 14.5845)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_14"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rock_14/StaticBody3D" groups=["escalable"]]
+transform = Transform3D(6.3742, 0, 0, 0, 1.89134, -4.45801, 0, 1.70447, 4.94678, 0.630383, 4.14352, -1.63334)
+shape = SubResource("BoxShape3D_wb7e6")
+debug_color = Color(0.982698, 0.000100304, 0.770091, 0.42)
+
+[node name="rock_15" parent="." instance=ExtResource("4_a24vh")]
+transform = Transform3D(0.838176, -0.5454, 0, 0.517766, 0.795708, -0.314274, 0.171405, 0.263417, 0.949332, 64.6374, 20.7163, 17.0523)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_15"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rock_15/StaticBody3D" groups=["escalable"]]
+transform = Transform3D(6.3742, 0, 0, 0, 1.89134, -4.45801, 0, 1.70447, 4.94678, 0.630383, 4.14352, -1.63334)
+shape = SubResource("BoxShape3D_wb7e6")
+debug_color = Color(0.982698, 0.000100304, 0.770091, 0.42)
+
+[node name="rock_16" parent="." instance=ExtResource("4_a24vh")]
+transform = Transform3D(-0.982939, 0.183934, 0, -0.183934, -0.982939, 0, 0, 0, 1, 57.7347, 20.5334, 26.3012)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_16"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rock_16/StaticBody3D" groups=["escalable"]]
+transform = Transform3D(6.3742, 0, 0, 0, 1.89134, -4.45801, 0, 1.70447, 4.94678, 0.630383, 4.14352, -1.63334)
+shape = SubResource("BoxShape3D_wb7e6")
+debug_color = Color(0.982698, 0.000100304, 0.770091, 0.42)
+
+[node name="rock_17" parent="." instance=ExtResource("4_a24vh")]
+transform = Transform3D(0.999575, -0.0291429, 0, 0.0263484, 0.903729, -0.427295, 0.0124526, 0.427113, 0.904112, 56.7743, 7.01631, 2.65652)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_17"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="rock_17/StaticBody3D" groups=["escalable"]]
+transform = Transform3D(6.3742, 3.72529e-09, -4.94346e-06, 8.9407e-08, 1.89134, -4.45801, -7.45058e-09, 1.70447, 4.94678, 0.337826, 4.05821, -1.23807)
+shape = SubResource("BoxShape3D_wb7e6")
+debug_color = Color(0.982698, 0.000100304, 0.770091, 0.42)
 
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Join" to="." method="_on_join_pressed"]

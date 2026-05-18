@@ -3,48 +3,98 @@
 [sub_resource type="GDScript" id="GDScript_qe1pe"]
 script/source = "extends CharacterBody3D
 
+# =====================================================
+# MOVIMIENTO
+# =====================================================
+
 @export var speed: float = 6.0
 @export var climb_speed: float = 5.0
 @export var gravity: float = 9.8
 @export var mouse_sensitivity: float = 0.002
 @export var jump_force: float = 4.8
 
+# =====================================================
+# ESCALADA
+# =====================================================
+
 @export var stick_to_wall_force: float = 25.0
 @export var climb_friction: float = 15.0
 
-# Límites de cámara al trepar
+# =====================================================
+# ESTAMINA
+# =====================================================
+
+@export var max_stamina: float = 100.0
+@export var stamina_drain: float = 20.0
+@export var stamina_recovery: float = 15.0
+
+var stamina: float = 100.0
+var exhausted: bool = false
+
+# =====================================================
+# CÁMARA
+# =====================================================
+
 @export var climb_camera_horizontal_limit: float = 65.0
 @export var climb_camera_vertical_limit: float = 70.0
+
+# =====================================================
+# VARIABLES
+# =====================================================
 
 var is_climbing: bool = false
 var climb_normal: Vector3 = Vector3.UP
 
+# =====================================================
+# NODOS
+# =====================================================
+
 @onready var neck: Node3D = $CollisionShape3D/Neck
 @onready var climb_ray: RayCast3D = $CollisionShape3D/Neck/ClimbRay_foot
+@onready var camara = $CollisionShape3D/Neck/Camera3D
+
+# =====================================================
+# ROTACIÓN
+# =====================================================
 
 var body_rotation_y: float = 0.0
 var camera_rotation_x: float = 0.0
 
-@onready var camara = $CollisionShape3D/Neck/Camera3D
+# =====================================================
+# MULTIJUGADOR
+# =====================================================
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 
+# =====================================================
+# READY
+# =====================================================
+
 func _ready() -> void:
+
 	camara.current = is_multiplayer_authority()
-	
+
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+	stamina = max_stamina
 
 	if climb_ray:
 
 		climb_ray.enabled = true
 		climb_ray.target_position = Vector3(0, 0, -2.8)
 
+# =====================================================
+# INPUT
+# =====================================================
 
 func _input(event: InputEvent) -> void:
+
 	if Input.is_action_just_pressed(\"quit\"):
+
 		$\"../\".exit_game(name.to_int())
 		get_tree().quit()
+
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 
 		var horiz = -event.relative.x * mouse_sensitivity
@@ -107,18 +157,64 @@ func _input(event: InputEvent) -> void:
 		if neck:
 			neck.rotation.x = camera_rotation_x
 
+# =====================================================
+# PHYSICS PROCESS
+# =====================================================
 
 func _physics_process(delta: float) -> void:
+
+	# =====================================================
+	# DETECCIÓN ESCALADA
+	# =====================================================
 
 	is_climbing = (
 		Input.is_action_pressed(\"Trepar\")
 		and climb_ray
 		and climb_ray.is_colliding()
+		and stamina > 0
+		and !exhausted
 	)
+
+	# =====================================================
+	# GUARDAR NORMAL DE PARED
+	# =====================================================
 
 	if is_climbing:
 		climb_normal = climb_ray.get_collision_normal()
 
+	# =====================================================
+	# SISTEMA DE ESTAMINA
+	# =====================================================
+
+	if is_climbing:
+		print(stamina)
+		stamina -= stamina_drain * delta
+		stamina = clamp(stamina, 0.0, max_stamina)
+
+		# =====================================================
+		# SIN ESTAMINA = CAER
+		# =====================================================
+
+		if stamina <= 0:
+
+			exhausted = true
+			is_climbing = false
+
+			# Fuerza hacia abajo al soltarse
+			velocity.y = -8.0
+
+	else:
+
+		stamina += stamina_recovery * delta
+		stamina = clamp(stamina, 0.0, max_stamina)
+
+		# =====================================================
+		# RECUPERAR DEL CANSANCIO
+		# =====================================================
+
+		if stamina >= 30.0:
+			exhausted = false
+		print(stamina)
 	# =====================================================
 	# MOVIMIENTO
 	# =====================================================
@@ -130,6 +226,9 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+# =====================================================
+# MOVIMIENTO ESCALADA
+# =====================================================
 
 func _climbing_movement(delta: float) -> void:
 
@@ -174,7 +273,7 @@ func _climbing_movement(delta: float) -> void:
 	# PEGARSE A LA PARED
 	# =====================================================
 
-	velocity += -climb_normal * stick_to_wall_force * 0.7
+	velocity += -climb_normal * stick_to_wall_force * 1.0
 
 	# =====================================================
 	# FRICCIÓN
@@ -187,6 +286,9 @@ func _climbing_movement(delta: float) -> void:
 			climb_friction * delta
 		)
 
+# =====================================================
+# MOVIMIENTO NORMAL
+# =====================================================
 
 func _normal_movement(delta: float) -> void:
 
@@ -222,21 +324,15 @@ func _normal_movement(delta: float) -> void:
 
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
-
 	else:
-
 		velocity.x = move_toward(velocity.x, 0, 25)
 		velocity.z = move_toward(velocity.z, 0, 25)
-
 	# =====================================================
 	# SALTO
 	# =====================================================
-
 	if Input.is_action_just_pressed(\"Saltar\") and is_on_floor():
 
 		velocity.y = jump_force
-		
-		
 "
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fq5u1"]
@@ -265,7 +361,7 @@ debug_color = Color(0.95316, 0, 0.564501, 1)
 [node name="Neck" type="Node3D" parent="CollisionShape3D"]
 
 [node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck"]
-transform = Transform3D(0.999964, 0, 0.00842986, 0, 1, 0, -0.00842986, 0, 0.999964, -0.00930429, 1.22687, 2.23076)
+transform = Transform3D(0.999964, 0, 0.00842986, 0, 1, 0, -0.00842986, 0, 0.999964, -0.00930429, 0.63672, -0.324774)
 fov = 89.755
 
 [node name="ClimbRay_foot" type="RayCast3D" parent="CollisionShape3D/Neck"]
