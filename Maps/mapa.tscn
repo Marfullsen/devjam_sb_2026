@@ -5,7 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://dj7df2tbaedy4" path="res://Textures/Montaña.jpg" id="2_5h80n"]
 [ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="2_a24vh"]
 [ext_resource type="Texture2D" uid="uid://cftikhkoq2eaf" path="res://Textures/pared escalada.jpg" id="4_5h80n"]
-[ext_resource type="PackedScene" uid="uid://jqlhs84pbh3o" path="res://Terrenos/rock_11.glb" id="4_a24vh"]
+[ext_resource type="PackedScene" uid="uid://cwntl31wxyukm" path="res://Terrenos/rock_13-convcol.glb" id="6_wb7e6"]
+[ext_resource type="PackedScene" uid="uid://cvg56gjhppvmq" path="res://estamina.tscn" id="7_chvf1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a24vh"]
 albedo_texture = ExtResource("1_46we1")
@@ -34,54 +35,9 @@ albedo_texture = ExtResource("4_5h80n")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5h80n"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_wb7e6"]
-size = Vector3(1.05383, 1.39754, 1.76531)
-
 [node name="Mapa" type="Node3D"]
 script = ExtResource("1_a24vh")
 player_scene = ExtResource("2_a24vh")
-
-[node name="PantallaInicio" type="CanvasLayer" parent="."]
-
-[node name="ImagenFondo" type="TextureRect" parent="PantallaInicio"]
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("2_5h80n")
-
-[node name="Control" type="Control" parent="PantallaInicio"]
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-metadata/_edit_use_anchors_ = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 2.95
-anchor_bottom = 2.325
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="Titulo" type="Label" parent="PantallaInicio/Control/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 70
-text = "Climb Together"
-
-[node name="Host" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
-layout_mode = 2
-text = "Host"
-
-[node name="Join" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
-layout_mode = 2
-text = "Join"
 
 [node name="piso_Bosque" type="StaticBody3D" parent="."]
 transform = Transform3D(1.53303, 0, 0, 0, 0.998178, 0, 0, 0, 1.44933, 0, 0, 0)
@@ -128,15 +84,60 @@ shape = SubResource("BoxShape3D_5h80n")
 _spawnable_scenes = PackedStringArray("uid://dqpdwn6vexrv5")
 spawn_path = NodePath("..")
 
-[node name="rock_11" parent="." instance=ExtResource("4_a24vh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.7826, 3.32923, 17.1245)
+[node name="rock_13-convcol2" parent="." instance=ExtResource("6_wb7e6")]
+transform = Transform3D(9.6424, 0, 0, 0, 7.61147, 0, 0, 0, 2.53286, 20.2421, -4.12585, 7.30381)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="rock_11"]
+[node name="PantallaInicio" type="CanvasLayer" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="rock_11/StaticBody3D"]
-transform = Transform3D(5.80967, 0, 0, 0, 2.30835, -2.41593, 0, 1.36815, 4.07618, 0.156376, 3.92983, -1.2603)
-shape = SubResource("BoxShape3D_wb7e6")
-debug_color = Color(0.674014, 0.00890513, 0.273246, 1)
+[node name="ImagenFondo" type="TextureRect" parent="PantallaInicio"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_5h80n")
+
+[node name="Control" type="Control" parent="PantallaInicio"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.95
+anchor_bottom = 2.325
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Titulo" type="Label" parent="PantallaInicio/Control/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Climb Together"
+
+[node name="Host" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="Join" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+layout_mode = 2
+text = "Join"
+
+[node name="Estamina" parent="." instance=ExtResource("7_chvf1")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 318.0
+offset_top = 409.0
+offset_right = 834.0
+offset_bottom = 409.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Join" to="." method="_on_join_pressed"]

@@ -17,8 +17,14 @@ script/source = "extends CharacterBody3D
 # ESCALADA
 # =====================================================
 
-@export var stick_to_wall_force: float = 25.0
+@export var stick_to_wall_force: float = 12.0
 @export var climb_friction: float = 15.0
+
+# MEMORIA DE ESCALADA
+@export var climb_memory_time: float = 0.2
+
+# SUAVIZADO DE NORMALES
+@export var normal_smooth_speed: float = 10.0
 
 # =====================================================
 # ESTAMINA
@@ -43,7 +49,8 @@ var exhausted: bool = false
 # =====================================================
 
 var is_climbing: bool = false
-var climb_normal: Vector3 = Vector3.UP
+var climb_normal: Vector3 = Vector3.FORWARD
+var climb_memory: float = 0.0
 
 # =====================================================
 # NODOS
@@ -52,6 +59,9 @@ var climb_normal: Vector3 = Vector3.UP
 @onready var neck: Node3D = $CollisionShape3D/Neck
 @onready var climb_ray: RayCast3D = $CollisionShape3D/Neck/ClimbRay_foot
 @onready var camara = $CollisionShape3D/Neck/Camera3D
+
+# HUD ESTAMINA
+@onready var stamina_ui = $\"../Estamina/Estamina/Control\"
 
 # =====================================================
 # ROTACIÓN
@@ -79,10 +89,16 @@ func _ready() -> void:
 
 	stamina = max_stamina
 
+	# HUD
+	stamina_ui.update_stamina(stamina, max_stamina)
+
+	# RAYCAST
 	if climb_ray:
 
 		climb_ray.enabled = true
-		climb_ray.target_position = Vector3(0, 0, -2.8)
+
+		# MÁS LARGO PARA EVITAR BUGS
+		climb_ray.target_position = Vector3(0, 0, -4.0)
 
 # =====================================================
 # INPUT
@@ -114,10 +130,6 @@ func _input(event: InputEvent) -> void:
 
 			if neck:
 
-				# -----------------------------
-				# Horizontal
-				# -----------------------------
-
 				neck.rotation.y += horiz
 
 				neck.rotation.y = clamp(
@@ -125,10 +137,6 @@ func _input(event: InputEvent) -> void:
 					deg_to_rad(-climb_camera_horizontal_limit),
 					deg_to_rad(climb_camera_horizontal_limit)
 				)
-
-				# -----------------------------
-				# Vertical
-				# -----------------------------
 
 				camera_rotation_x = clamp(
 					camera_rotation_x,
@@ -138,22 +146,18 @@ func _input(event: InputEvent) -> void:
 
 		else:
 
-			# Rotación normal del player
 			body_rotation_y += horiz
 			rotation.y = body_rotation_y
 
-			# Reset horizontal cámara
 			if neck:
 				neck.rotation.y = 0
 
-			# Límite normal fuera de escalada
 			camera_rotation_x = clamp(
 				camera_rotation_x,
 				deg_to_rad(-85),
 				deg_to_rad(85)
 			)
 
-		# Aplicar rotación vertical
 		if neck:
 			neck.rotation.x = camera_rotation_x
 
@@ -164,32 +168,60 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 
 	# =====================================================
-	# DETECCIÓN ESCALADA
+	# DETECCIÓN DE PARED
+	# =====================================================
+
+	var touching_wall = (
+		climb_ray
+		and climb_ray.is_colliding()
+	)
+
+	# =====================================================
+	# MEMORIA DE ESCALADA
+	# =====================================================
+
+	if touching_wall:
+
+		climb_memory = climb_memory_time
+
+	else:
+
+		climb_memory -= delta
+
+	# =====================================================
+	# ACTIVAR ESCALADA
 	# =====================================================
 
 	is_climbing = (
 		Input.is_action_pressed(\"Trepar\")
-		and climb_ray
-		and climb_ray.is_colliding()
+		and climb_memory > 0.0
 		and stamina > 0
 		and !exhausted
 	)
 
 	# =====================================================
-	# GUARDAR NORMAL DE PARED
+	# SUAVIZAR NORMALES
 	# =====================================================
 
-	if is_climbing:
-		climb_normal = climb_ray.get_collision_normal()
+	if touching_wall:
+
+		var target_normal = climb_ray.get_collision_normal()
+
+		climb_normal = climb_normal.slerp(
+			target_normal,
+			normal_smooth_speed * delta
+		).normalized()
 
 	# =====================================================
 	# SISTEMA DE ESTAMINA
 	# =====================================================
 
 	if is_climbing:
-		print(stamina)
+
 		stamina -= stamina_drain * delta
 		stamina = clamp(stamina, 0.0, max_stamina)
+
+		stamina_ui.update_stamina(stamina, max_stamina)
 
 		# =====================================================
 		# SIN ESTAMINA = CAER
@@ -200,7 +232,6 @@ func _physics_process(delta: float) -> void:
 			exhausted = true
 			is_climbing = false
 
-			# Fuerza hacia abajo al soltarse
 			velocity.y = -8.0
 
 	else:
@@ -208,13 +239,15 @@ func _physics_process(delta: float) -> void:
 		stamina += stamina_recovery * delta
 		stamina = clamp(stamina, 0.0, max_stamina)
 
+		stamina_ui.update_stamina(stamina, max_stamina)
+
 		# =====================================================
-		# RECUPERAR DEL CANSANCIO
+		# RECUPERAR CANSANCIO
 		# =====================================================
 
 		if stamina >= 30.0:
 			exhausted = false
-		print(stamina)
+
 	# =====================================================
 	# MOVIMIENTO
 	# =====================================================
@@ -234,12 +267,35 @@ func _climbing_movement(delta: float) -> void:
 
 	var camera_forward = -neck.global_transform.basis.z.normalized()
 
-	var right = climb_normal.cross(camera_forward).normalized()
+	# =====================================================
+	# DIRECCIÓN DERECHA SOBRE LA PARED
+	# =====================================================
+
+	var right = climb_normal.cross(camera_forward)
+
+	# EVITAR BUGS SI LAS DIRECCIONES SON PARALELAS
+	if right.length() < 0.05:
+
+		right = neck.global_transform.basis.x
+
+	right = right.normalized()
+
+	# =====================================================
+	# CORREGIR ORIENTACIÓN
+	# =====================================================
 
 	if right.dot(neck.global_transform.basis.x) < 0:
 		right = -right
 
+	# =====================================================
+	# DIRECCIÓN ARRIBA SOBRE PARED
+	# =====================================================
+
 	var up_on_wall = right.cross(climb_normal).normalized()
+
+	# =====================================================
+	# INPUT
+	# =====================================================
 
 	var input = Input.get_vector(
 		\"Izquierda\",
@@ -249,31 +305,28 @@ func _climbing_movement(delta: float) -> void:
 	)
 
 	# =====================================================
-	# MOVIMIENTO PRINCIPAL
+	# MOVIMIENTO BASE
 	# =====================================================
 
-	velocity = (
+	var target_velocity = (
 		right * input.x * climb_speed +
 		up_on_wall * input.y * climb_speed
 	)
 
 	# =====================================================
-	# MOVIMIENTO EXTRA HACIA PARED
+	# SUAVIZAR MOVIMIENTO
 	# =====================================================
 
-	if Input.is_action_pressed(\"Adelante\"):
-
-		velocity += climb_normal * climb_speed * 0.8
-
-	elif Input.is_action_pressed(\"Atras\"):
-
-		velocity -= climb_normal * climb_speed * 0.6
+	velocity = velocity.lerp(
+		target_velocity,
+		8.0 * delta
+	)
 
 	# =====================================================
 	# PEGARSE A LA PARED
 	# =====================================================
 
-	velocity += -climb_normal * stick_to_wall_force * 1.0
+	velocity += -climb_normal * stick_to_wall_force
 
 	# =====================================================
 	# FRICCIÓN
@@ -324,12 +377,16 @@ func _normal_movement(delta: float) -> void:
 
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
+
 	else:
+
 		velocity.x = move_toward(velocity.x, 0, 25)
 		velocity.z = move_toward(velocity.z, 0, 25)
+
 	# =====================================================
 	# SALTO
 	# =====================================================
+
 	if Input.is_action_just_pressed(\"Saltar\") and is_on_floor():
 
 		velocity.y = jump_force

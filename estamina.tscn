@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvg56gjhppvmq"]
+
+[ext_resource type="Script" uid="uid://bhmrmv3ei3bu4" path="res://control.gd" id="1_5idop"]
+[ext_resource type="Texture2D" uid="uid://b55a4gkn8mphl" path="res://Textures/Estamina.jpg" id="1_7ey3e"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7ey3e"]
+font_size = 14
+font_color = Color(0, 0, 0, 1)
+
+[node name="Estamina" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Estamina" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="Estamina"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_5idop")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Estamina/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 5.0
+offset_top = 477.0
+offset_right = 117.0
+offset_bottom = 588.0
+grow_vertical = 2
+texture = ExtResource("1_7ey3e")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Estamina/Control"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 562.0
+offset_right = 114.0
+offset_bottom = 625.0
+text = "100%"
+label_settings = SubResource("LabelSettings_7ey3e")
