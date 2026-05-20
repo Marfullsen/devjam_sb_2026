@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="2_a24vh"]
 [ext_resource type="Texture2D" uid="uid://cftikhkoq2eaf" path="res://Textures/pared escalada.jpg" id="4_5h80n"]
 [ext_resource type="PackedScene" uid="uid://cwntl31wxyukm" path="res://Terrenos/rock_13-convcol.glb" id="6_wb7e6"]
-[ext_resource type="PackedScene" uid="uid://cvg56gjhppvmq" path="res://estamina.tscn" id="7_chvf1"]
+[ext_resource type="PackedScene" uid="uid://cvg56gjhppvmq" path="res://HUD/estamina.tscn" id="7_chvf1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a24vh"]
 albedo_texture = ExtResource("1_46we1")
