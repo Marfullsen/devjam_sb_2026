@@ -1,0 +1,296 @@
+[gd_scene format=3 uid="uid://dqpdwn6vexrv5"]
+
+[ext_resource type="Material" uid="uid://o7na8drc2je2" path="res://addons/verlet_rope_4_gd/materials/rope_default.material" id="1_fq5u1"]
+[ext_resource type="Script" uid="uid://cwyp87qwntob" path="res://addons/verlet_rope_4_gd/verlet_rope.gd" id="2_dju3o"]
+
+[sub_resource type="GDScript" id="GDScript_qe1pe"]
+script/source = "extends CharacterBody3D
+
+@export var speed: float = 6.0
+@export var climb_speed: float = 5.0
+@export var gravity: float = 9.8
+@export var mouse_sensitivity: float = 0.002
+@export var jump_force: float = 4.8
+
+@export var stick_to_wall_force: float = 25.0
+@export var climb_friction: float = 15.0
+
+# Límites de cámara al trepar
+@export var climb_camera_horizontal_limit: float = 65.0
+@export var climb_camera_vertical_limit: float = 70.0
+
+var is_climbing: bool = false
+var climb_normal: Vector3 = Vector3.UP
+
+@onready var neck: Node3D = $CollisionShape3D/Neck
+@onready var climb_ray: RayCast3D = $CollisionShape3D/Neck/ClimbRay_foot
+
+var body_rotation_y: float = 0.0
+var camera_rotation_x: float = 0.0
+
+@onready var camara = $CollisionShape3D/Neck/Camera3D
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(name.to_int())
+
+func _ready() -> void:
+	camara.current = is_multiplayer_authority()
+	if Input.is_action_just_pressed(\"quit\"):
+		print(\"Quitting...\")
+		$\"../\".exit_game(name.to_int())
+		get_tree().quit()
+	
+	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+	if climb_ray:
+
+		climb_ray.enabled = true
+		climb_ray.target_position = Vector3(0, 0, -2.8)
+
+
+func _input(event: InputEvent) -> void:
+
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+
+		var horiz = -event.relative.x * mouse_sensitivity
+		var vert = -event.relative.y * mouse_sensitivity
+
+		# =====================================================
+		# ROTACIÓN VERTICAL
+		# =====================================================
+
+		camera_rotation_x += vert
+
+		# =====================================================
+		# ROTACIÓN HORIZONTAL
+		# =====================================================
+
+		if is_climbing:
+
+			if neck:
+
+				# -----------------------------
+				# Horizontal
+				# -----------------------------
+
+				neck.rotation.y += horiz
+
+				neck.rotation.y = clamp(
+					neck.rotation.y,
+					deg_to_rad(-climb_camera_horizontal_limit),
+					deg_to_rad(climb_camera_horizontal_limit)
+				)
+
+				# -----------------------------
+				# Vertical
+				# -----------------------------
+
+				camera_rotation_x = clamp(
+					camera_rotation_x,
+					deg_to_rad(-climb_camera_vertical_limit),
+					deg_to_rad(climb_camera_vertical_limit)
+				)
+
+		else:
+
+			# Rotación normal del player
+			body_rotation_y += horiz
+			rotation.y = body_rotation_y
+
+			# Reset horizontal cámara
+			if neck:
+				neck.rotation.y = 0
+
+			# Límite normal fuera de escalada
+			camera_rotation_x = clamp(
+				camera_rotation_x,
+				deg_to_rad(-85),
+				deg_to_rad(85)
+			)
+
+		# Aplicar rotación vertical
+		if neck:
+			neck.rotation.x = camera_rotation_x
+
+
+func _physics_process(delta: float) -> void:
+
+	is_climbing = (
+		Input.is_action_pressed(\"Trepar\")
+		and climb_ray
+		and climb_ray.is_colliding()
+	)
+
+	if is_climbing:
+		climb_normal = climb_ray.get_collision_normal()
+
+	# =====================================================
+	# MOVIMIENTO
+	# =====================================================
+
+	if is_climbing:
+		_climbing_movement(delta)
+	else:
+		_normal_movement(delta)
+
+	move_and_slide()
+
+
+func _climbing_movement(delta: float) -> void:
+
+	var camera_forward = -neck.global_transform.basis.z.normalized()
+
+	var right = climb_normal.cross(camera_forward).normalized()
+
+	if right.dot(neck.global_transform.basis.x) < 0:
+		right = -right
+
+	var up_on_wall = right.cross(climb_normal).normalized()
+
+	var input = Input.get_vector(
+		\"Izquierda\",
+		\"Derecha\",
+		\"Adelante\",
+		\"Atras\"
+	)
+
+	# =====================================================
+	# MOVIMIENTO PRINCIPAL
+	# =====================================================
+
+	velocity = (
+		right * input.x * climb_speed +
+		up_on_wall * input.y * climb_speed
+	)
+
+	# =====================================================
+	# MOVIMIENTO EXTRA HACIA PARED
+	# =====================================================
+
+	if Input.is_action_pressed(\"Adelante\"):
+
+		velocity += climb_normal * climb_speed * 0.8
+
+	elif Input.is_action_pressed(\"Atras\"):
+
+		velocity -= climb_normal * climb_speed * 0.6
+
+	# =====================================================
+	# PEGARSE A LA PARED
+	# =====================================================
+
+	velocity += -climb_normal * stick_to_wall_force * 0.7
+
+	# =====================================================
+	# FRICCIÓN
+	# =====================================================
+
+	if input.length() < 0.1:
+
+		velocity = velocity.lerp(
+			Vector3.ZERO,
+			climb_friction * delta
+		)
+
+
+func _normal_movement(delta: float) -> void:
+
+	# =====================================================
+	# GRAVEDAD
+	# =====================================================
+
+	if not is_on_floor():
+
+		velocity.y -= gravity * delta
+
+	# =====================================================
+	# INPUT MOVIMIENTO
+	# =====================================================
+
+	var input_dir = Input.get_vector(
+		\"Izquierda\",
+		\"Derecha\",
+		\"Adelante\",
+		\"Atras\"
+	)
+
+	var direction = (
+		transform.basis *
+		Vector3(input_dir.x, 0, input_dir.y)
+	).normalized()
+
+	# =====================================================
+	# MOVIMIENTO
+	# =====================================================
+
+	if direction.length() > 0:
+
+		velocity.x = direction.x * speed
+		velocity.z = direction.z * speed
+
+	else:
+
+		velocity.x = move_toward(velocity.x, 0, 25)
+		velocity.z = move_toward(velocity.z, 0, 25)
+
+	# =====================================================
+	# SALTO
+	# =====================================================
+
+	if Input.is_action_just_pressed(\"Saltar\") and is_on_floor():
+
+		velocity.y = jump_force
+		
+		
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fq5u1"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qe1pe"]
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_fq5u1"]
+resource_local_to_scene = true
+metadata/creation_stamp = 4692688050300
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_dju3o"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=285009334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+script = SubResource("GDScript_qe1pe")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=600213620]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.516014, 0)
+shape = SubResource("CapsuleShape3D_fq5u1")
+debug_color = Color(0.95316, 0, 0.564501, 1)
+
+[node name="Neck" type="Node3D" parent="CollisionShape3D" unique_id=1350031552]
+
+[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck" unique_id=1890611577]
+transform = Transform3D(0.999964, 0, 0.00842986, 0, 1, 0, -0.00842986, 0, 0.999964, -0.00930429, 1.22687, 2.23076)
+fov = 89.755
+
+[node name="ClimbRay_foot" type="RayCast3D" parent="CollisionShape3D/Neck" unique_id=1922241490]
+transform = Transform3D(1, 1.74846e-07, -1.74846e-07, -1.74846e-07, 1, 1.74846e-07, 1.74846e-07, -1.74846e-07, 1, 0, -0.318432, 0.134992)
+target_position = Vector3(0, 0, -1.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1303318768]
+transform = Transform3D(0.780578, 0, 0, 0, 0.888841, 0, 0, 0, 0.772459, -0.00221679, 0.494685, 4.52995e-06)
+mesh = SubResource("CapsuleMesh_qe1pe")
+
+[node name="VerletRope" type="MeshInstance3D" parent="." unique_id=1532152717]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.300338, 0.662918, 0.170716)
+material_override = ExtResource("1_fq5u1")
+mesh = SubResource("ImmediateMesh_fq5u1")
+script = ExtResource("2_dju3o")
+dynamic_collision_mask = 1
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1322005913]
+replication_config = SubResource("SceneReplicationConfig_dju3o")
