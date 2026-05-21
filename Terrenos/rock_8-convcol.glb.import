@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dhcukwf0pbcfi"
-path="res://.godot/imported/rock_2.glb-bd70bcd72cb9e8b2dbbda6664523dc43.scn"
+uid="uid://62nhko5f46g2"
+path="res://.godot/imported/rock_8-convcol.glb-92573721bc398c5770d0dc4bd8cdccf3.scn"
 
 [deps]
 
-source_file="res://Terrenos/rock_2.glb"
-dest_files=["res://.godot/imported/rock_2.glb-bd70bcd72cb9e8b2dbbda6664523dc43.scn"]
+source_file="res://Terrenos/rock_8-convcol.glb"
+dest_files=["res://.godot/imported/rock_8-convcol.glb-92573721bc398c5770d0dc4bd8cdccf3.scn"]
 
 [params]
 

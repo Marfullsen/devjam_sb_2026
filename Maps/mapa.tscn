@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://70w0kdr2ib02"]
+[gd_scene load_steps=28 format=3 uid="uid://70w0kdr2ib02"]
 
 [ext_resource type="Texture2D" uid="uid://bqnlhg3uhfvj1" path="res://Textures/Pasto.jpg" id="1_46we1"]
 [ext_resource type="Script" uid="uid://cvky7f4ov0alk" path="res://Maps/mapa.gd" id="1_a24vh"]
@@ -7,6 +7,16 @@
 [ext_resource type="Texture2D" uid="uid://cftikhkoq2eaf" path="res://Textures/pared escalada.jpg" id="4_5h80n"]
 [ext_resource type="PackedScene" uid="uid://cwntl31wxyukm" path="res://Terrenos/rock_13-convcol.glb" id="6_wb7e6"]
 [ext_resource type="PackedScene" uid="uid://cvg56gjhppvmq" path="res://HUD/estamina.tscn" id="7_chvf1"]
+[ext_resource type="PackedScene" uid="uid://des8xh1yk1dk1" path="res://Terrenos/rock_2-convcol.glb" id="8_gnt17"]
+[ext_resource type="PackedScene" uid="uid://xrkgf683l8uo" path="res://Terrenos/rock_3-convcol.glb" id="9_amk0r"]
+[ext_resource type="PackedScene" uid="uid://2yq5vgxii5jr" path="res://Terrenos/rock_4-convcol.glb" id="10_tg8ha"]
+[ext_resource type="PackedScene" uid="uid://c36ad728xt5wb" path="res://Terrenos/rock_5-convcol.glb" id="11_a6tbp"]
+[ext_resource type="PackedScene" uid="uid://damgvjvuh6d8g" path="res://Terrenos/rock_6-convcol.glb" id="12_vpa7x"]
+[ext_resource type="PackedScene" uid="uid://bswk8kyuo3hhx" path="res://Terrenos/rock_7-convcol.glb" id="13_dqhcp"]
+[ext_resource type="PackedScene" uid="uid://62nhko5f46g2" path="res://Terrenos/rock_8-convcol.glb" id="14_874gp"]
+[ext_resource type="PackedScene" uid="uid://cmklemkh4vcw2" path="res://Terrenos/rock_9-convcol.glb" id="15_0o7fn"]
+[ext_resource type="PackedScene" uid="uid://escf6k7lxd2w" path="res://Terrenos/rock_12-convcol.glb" id="17_874gp"]
+[ext_resource type="PackedScene" uid="uid://b6k7lv4813i2v" path="res://Terrenos/rock_10-convcol.glb" id="17_dqhcp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a24vh"]
 albedo_texture = ExtResource("1_46we1")
@@ -85,7 +95,7 @@ _spawnable_scenes = PackedStringArray("uid://dqpdwn6vexrv5")
 spawn_path = NodePath("..")
 
 [node name="rock_13-convcol2" parent="." groups=["escalable"] instance=ExtResource("6_wb7e6")]
-transform = Transform3D(12.6134, 0, 0, 0, 7.61147, 0, 0, 0, 23.3835, 51.3937, -4.12585, 16.4104)
+transform = Transform3D(12.6134, 0, 0, 0, 7.61147, 0, 0, 0, 23.3835, 54.0666, -3.45636, 16.4104)
 
 [node name="PantallaInicio" type="CanvasLayer" parent="."]
 
@@ -138,6 +148,36 @@ offset_right = 834.0
 offset_bottom = 409.0
 grow_horizontal = 1
 grow_vertical = 1
+
+[node name="rock_2-convcol2" parent="." instance=ExtResource("8_gnt17")]
+transform = Transform3D(2.31874, 0, 0, 0, 3.9576, 0, 0, 0, 3.35885, 57.4148, 2.56774, -10.3158)
+
+[node name="rock_3-convcol2" parent="." instance=ExtResource("9_amk0r")]
+transform = Transform3D(3.10279, 0, 0, 0, 2.55986, 0, 0, 0, 3.41338, 74.1539, 5.01222, -31.3384)
+
+[node name="rock_4-convcol2" parent="." instance=ExtResource("10_tg8ha")]
+transform = Transform3D(5.6503, 0, 0, 0, 3.08555, 0, 0, 0, 3.83904, 59.0546, -7.99353, -23.5556)
+
+[node name="rock_5-convcol2" parent="." instance=ExtResource("11_a6tbp")]
+transform = Transform3D(2.81884, 0, 0, 0, 2.0543, 0, 0, 0, 3.61701, 69.1836, 34.2746, -0.0418768)
+
+[node name="rock_6-convcol2" parent="." instance=ExtResource("12_vpa7x")]
+transform = Transform3D(1.30868, -0.68733, 0, 0.56339, 1.59658, 0, 0, 0, 1.33609, 73.0956, 27.159, -30.7577)
+
+[node name="rock_7-convcol2" parent="." instance=ExtResource("13_dqhcp")]
+transform = Transform3D(1.96007, 0, 0, 0, 1.40361, 0, 0, 0, 1.75615, 65.3431, 10.8356, 4.54685)
+
+[node name="rock_8-convcol2" parent="." instance=ExtResource("14_874gp")]
+transform = Transform3D(3.07605, -0.725283, 0, 0.357054, 6.24838, 0, 0, 0, 3.30415, 74.4761, 19.8312, -23.623)
+
+[node name="rock_9-convcol2" parent="." instance=ExtResource("15_0o7fn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73.7643, 6.54317, 26.0413)
+
+[node name="rock_10-convcol2" parent="." instance=ExtResource("17_dqhcp")]
+transform = Transform3D(0.329474, 0, 0, 0, 0.437366, 0, 0, 0, 0.577394, 79.7508, 32.3903, 22.5168)
+
+[node name="rock_12-convcol" parent="." instance=ExtResource("17_874gp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.7533, 0.123783, 13.409)
 
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Join" to="." method="_on_join_pressed"]
