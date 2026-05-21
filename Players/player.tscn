@@ -324,14 +324,15 @@ func _climbing_movement(delta: float) -> void:
 	# DIRECCIONES RELATIVAS A LA PARED
 	# =====================================================
 
-	var right := climb_normal.cross(Vector3.UP).normalized()
+	var right := Vector3.UP.cross(climb_normal).normalized()
 
-	# Evita inversión de controles
+# Evita inversión de controles
 	if right.dot(camara.global_transform.basis.x) < 0:
 
 		right = -right
 
-	var up_on_wall := climb_normal.cross(right).normalized()
+# ESTA ES LA LÍNEA IMPORTANTE
+	var up_on_wall := right.cross(climb_normal).normalized()
 
 	# =====================================================
 	# DIRECCIÓN FINAL
