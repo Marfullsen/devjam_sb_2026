@@ -14,6 +14,13 @@ script/source = "extends CharacterBody3D
 @export var jump_force: float = 4.8
 
 # =====================================================
+# ROPE
+# =====================================================
+
+@export var rope_max_distance := 8.0
+@export var rope_force := 30.0
+
+# =====================================================
 # ESCALADA
 # =====================================================
 
@@ -98,6 +105,8 @@ func _ready() -> void:
 
 	stamina = max_stamina
 
+	add_to_group(\"players\")
+
 	stamina_ui.update_stamina(
 		stamina,
 		max_stamina
@@ -122,6 +131,9 @@ func get_climb_rays() -> Array:
 # =====================================================
 
 func _input(event: InputEvent) -> void:
+
+	if !is_multiplayer_authority():
+		return
 
 	if Input.is_action_just_pressed(\"quit\"):
 
@@ -171,6 +183,9 @@ func _input(event: InputEvent) -> void:
 # =====================================================
 
 func _physics_process(delta: float) -> void:
+
+	if !is_multiplayer_authority():
+		return
 
 	# =====================================================
 	# DETECTAR PARED
@@ -302,6 +317,49 @@ func _physics_process(delta: float) -> void:
 
 		_normal_movement(delta)
 
+	# =====================================================
+	# ROPE PHYSICS
+	# =====================================================
+
+	var players = get_tree().get_nodes_in_group(\"players\")
+
+	if players.size() >= 2:
+
+		var other_player = null
+
+		for p in players:
+
+			if p != self:
+
+				other_player = p
+				break
+
+		if other_player != null:
+
+			var offset = (
+				other_player.global_position -
+				global_position
+			)
+
+			var distance = offset.length()
+
+			if distance > rope_max_distance:
+
+				var direction = offset.normalized()
+
+				var excess = (
+					distance -
+					rope_max_distance
+				)
+
+				var force = (
+					direction *
+					excess *
+					rope_force
+				)
+
+				velocity += force * delta
+
 	move_and_slide()
 
 # =====================================================
@@ -310,7 +368,6 @@ func _physics_process(delta: float) -> void:
 
 func _climbing_movement(delta: float) -> void:
 
-	# Elimina residuos de gravedad
 	velocity = Vector3.ZERO
 
 	var input_dir := Input.get_vector(
@@ -320,23 +377,19 @@ func _climbing_movement(delta: float) -> void:
 		\"Atras\"
 	)
 
-	# =====================================================
-	# DIRECCIONES RELATIVAS A LA PARED
-	# =====================================================
+	var right := Vector3.UP.cross(
+		climb_normal
+	).normalized()
 
-	var right := Vector3.UP.cross(climb_normal).normalized()
-
-# Evita inversión de controles
-	if right.dot(camara.global_transform.basis.x) < 0:
+	if right.dot(
+		camara.global_transform.basis.x
+	) < 0:
 
 		right = -right
 
-# ESTA ES LA LÍNEA IMPORTANTE
-	var up_on_wall := right.cross(climb_normal).normalized()
-
-	# =====================================================
-	# DIRECCIÓN FINAL
-	# =====================================================
+	var up_on_wall := right.cross(
+		climb_normal
+	).normalized()
 
 	var move_direction := (
 		right * input_dir.x +
@@ -347,21 +400,12 @@ func _climbing_movement(delta: float) -> void:
 
 		move_direction = move_direction.normalized()
 
-	# =====================================================
-	# VELOCIDAD
-	# =====================================================
-
 	velocity = move_direction * climb_speed
 
-	# =====================================================
-	# PEGARSE A LA PARED
-	# =====================================================
-
-	velocity += -climb_normal * stick_to_wall_force
-
-	# =====================================================
-	# FRICCIÓN
-	# =====================================================
+	velocity += (
+		-climb_normal *
+		stick_to_wall_force
+	)
 
 	if input_dir.length() < 0.1:
 
@@ -376,17 +420,9 @@ func _climbing_movement(delta: float) -> void:
 
 func _normal_movement(delta: float) -> void:
 
-	# =====================================================
-	# GRAVEDAD
-	# =====================================================
-
 	if not is_on_floor():
 
 		velocity.y -= gravity * delta
-
-	# =====================================================
-	# INPUT
-	# =====================================================
 
 	var input_dir := Input.get_vector(
 		\"Izquierda\",
@@ -397,12 +433,12 @@ func _normal_movement(delta: float) -> void:
 
 	var direction := (
 		transform.basis *
-		Vector3(input_dir.x, 0, input_dir.y)
+		Vector3(
+			input_dir.x,
+			0,
+			input_dir.y
+		)
 	).normalized()
-
-	# =====================================================
-	# MOVIMIENTO
-	# =====================================================
 
 	if direction.length() > 0:
 
@@ -423,11 +459,10 @@ func _normal_movement(delta: float) -> void:
 			25.0
 		)
 
-	# =====================================================
-	# SALTO
-	# =====================================================
-
-	if Input.is_action_just_pressed(\"Saltar\") and is_on_floor():
+	if (
+		Input.is_action_just_pressed(\"Saltar\")
+		and is_on_floor()
+	):
 
 		velocity.y = jump_force
 "
@@ -446,7 +481,7 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
 script = SubResource("GDScript_qe1pe")
 

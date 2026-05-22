@@ -377,8 +377,8 @@ transform = Transform3D(4.99397, -2.80825, 0, 1.61946, 8.65987, 0, 0, 0, 6.39003
 
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_multijugador_pressed"]
-[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Jugar" to="." method="_on_jugar_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Jugar" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Jugar" to="." method="_on_jugar_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Sonido" to="." method="_on_sonido_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/salir" to="." method="_on_salir_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/PanelCoop/VBoxContainer/Crear" to="." method="_on_crear_pressed"]
