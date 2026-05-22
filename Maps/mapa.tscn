@@ -1,8 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://70w0kdr2ib02"]
+[gd_scene format=3 uid="uid://70w0kdr2ib02"]
 
 [ext_resource type="Texture2D" uid="uid://bqnlhg3uhfvj1" path="res://Textures/Pasto.jpg" id="1_46we1"]
 [ext_resource type="Script" uid="uid://cvky7f4ov0alk" path="res://Maps/mapa.gd" id="1_a24vh"]
 [ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="2_dqhcp"]
+[ext_resource type="PackedScene" uid="uid://c5sgotdwy3428" path="res://Players/rope.tscn" id="3_874gp"]
 [ext_resource type="Texture2D" uid="uid://cftikhkoq2eaf" path="res://Textures/pared escalada.jpg" id="4_5h80n"]
 [ext_resource type="Texture2D" uid="uid://di0tnhfao1rew" path="res://Textures/rock_12-convcol_WhatsApp Image 2026-05-21 at 1.08.jpg" id="4_dqhcp"]
 [ext_resource type="Texture2D" uid="uid://dkqmy3r5tsm6k" path="res://Textures/menu.png" id="6_dqhcp"]
@@ -45,63 +46,64 @@ albedo_texture = ExtResource("4_5h80n")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5h80n"]
 
-[node name="Mapa" type="Node3D"]
+[node name="Mapa" type="Node3D" unique_id=360592972 groups=["rope"]]
 script = ExtResource("1_a24vh")
+rope_scene = ExtResource("3_874gp")
 player_scene = ExtResource("2_dqhcp")
 
-[node name="piso_Bosque" type="StaticBody3D" parent="."]
+[node name="piso_Bosque" type="StaticBody3D" parent="." unique_id=840854071]
 transform = Transform3D(1.53303, 0, 0, 0, 0.998178, 0, 0, 0, 1.44933, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="piso_Bosque"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="piso_Bosque" unique_id=1277326759]
 transform = Transform3D(62.7292, 0, 0, 0, 0.682252, 0, 0, 0, 51.5434, 18.0782, -0.0238233, 0.0119699)
 material_override = SubResource("StandardMaterial3D_a24vh")
 mesh = SubResource("PlaneMesh_4cnpp")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="piso_Bosque"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="piso_Bosque" unique_id=275739230]
 transform = Transform3D(51.0369, 0, 0, 0, 1, 0, 0, 0, 47.8703, 10.9628, -0.375991, 0)
 shape = SubResource("BoxShape3D_1eot7")
 debug_color = Color(0, 0.466667, 0.45098, 1)
 
-[node name="Level_1" type="StaticBody3D" parent="." groups=["escalable"]]
+[node name="Level_1" type="StaticBody3D" parent="." unique_id=1105880888 groups=["escalable"]]
 transform = Transform3D(0.941194, -0.337867, 0, 0.337867, 0.941194, 0, 0, 0, 1, 90.1615, 85.0998, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Level_1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level_1" unique_id=771583628]
 transform = Transform3D(1.96241, -1.43504, 0, 2.20288, 1.2784, 0, 0, 0, 191.475, 29.8049, 18.04, 0.616673)
 material_override = SubResource("StandardMaterial3D_874gp")
 mesh = SubResource("BoxMesh_1eot7")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Level_1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level_1" unique_id=166777393]
 transform = Transform3D(1.96496, -1.43691, 0, 2.20575, 1.28006, 0, 0, 0, 100.953, 29.8962, 18.0071, 0.798595)
 shape = SubResource("BoxShape3D_ejyeh")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1471417715]
 environment = SubResource("Environment_a24vh")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1830164901]
 transform = Transform3D(1, 0, 0, 0, 0.741191, 0.671294, 0, -0.671294, 0.741191, -39.3774, 66.6715, 21.0314)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." groups=["escalable"]]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=312377159 groups=["escalable"]]
 transform = Transform3D(12.3892, 0, 0, 0, 27.244, 0, 0, 0, 1, 0, 13.3686, -6.47312)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1993195348]
 material_override = SubResource("StandardMaterial3D_chvf1")
 mesh = SubResource("BoxMesh_46we1")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1167741990]
 shape = SubResource("BoxShape3D_5h80n")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=978535670]
 _spawnable_scenes = PackedStringArray("uid://dqpdwn6vexrv5")
 spawn_path = NodePath("..")
 
-[node name="PantallaInicio" type="CanvasLayer" parent="."]
+[node name="PantallaInicio" type="CanvasLayer" parent="." unique_id=1682884760]
 
-[node name="ImagenFondo" type="TextureRect" parent="PantallaInicio"]
+[node name="ImagenFondo" type="TextureRect" parent="PantallaInicio" unique_id=742688511]
 offset_right = 1163.0
 offset_bottom = 658.0
 texture = ExtResource("6_dqhcp")
 
-[node name="Control" type="Control" parent="PantallaInicio"]
+[node name="Control" type="Control" parent="PantallaInicio" unique_id=1814146603]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -113,7 +115,7 @@ grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control" unique_id=107679234]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 2.95
@@ -126,24 +128,24 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="multijugador" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+[node name="multijugador" type="Button" parent="PantallaInicio/Control/VBoxContainer" unique_id=1450158239]
 layout_mode = 2
 text = "multijugador"
 
-[node name="Jugar" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+[node name="Jugar" type="Button" parent="PantallaInicio/Control/VBoxContainer" unique_id=1676422461]
 layout_mode = 2
 text = "Jugar
 "
 
-[node name="Sonido" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+[node name="Sonido" type="Button" parent="PantallaInicio/Control/VBoxContainer" unique_id=635209686]
 layout_mode = 2
 text = "Sonido"
 
-[node name="salir" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+[node name="salir" type="Button" parent="PantallaInicio/Control/VBoxContainer" unique_id=355049450]
 layout_mode = 2
 text = "Salir"
 
-[node name="PanelCoop" type="Panel" parent="PantallaInicio/Control"]
+[node name="PanelCoop" type="Panel" parent="PantallaInicio/Control" unique_id=1586676375]
 visible = false
 layout_mode = 0
 offset_left = -206.0
@@ -151,24 +153,24 @@ offset_top = 21.0
 offset_right = 208.0
 offset_bottom = 123.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control/PanelCoop"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control/PanelCoop" unique_id=104739957]
 layout_mode = 0
 offset_right = 421.0
 offset_bottom = 145.0
 
-[node name="Crear" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer"]
+[node name="Crear" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer" unique_id=1392233934]
 layout_mode = 2
 text = "Crear"
 
-[node name="Unirse" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer"]
+[node name="Unirse" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer" unique_id=2030985280]
 layout_mode = 2
 text = "Unirse"
 
-[node name="Volver" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer"]
+[node name="Volver" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer" unique_id=607927910]
 layout_mode = 2
 text = "Volver"
 
-[node name="PanelOpciones" type="Panel" parent="PantallaInicio/Control"]
+[node name="PanelOpciones" type="Panel" parent="PantallaInicio/Control" unique_id=1664306305]
 visible = false
 layout_mode = 0
 offset_left = -208.0
@@ -176,24 +178,24 @@ offset_top = 23.0
 offset_right = 212.0
 offset_bottom = 90.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control/PanelOpciones"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control/PanelOpciones" unique_id=382872809]
 layout_mode = 0
 offset_right = 419.0
 offset_bottom = 105.0
 
-[node name="Sonidos" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer"]
+[node name="Sonidos" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer" unique_id=1959684886]
 layout_mode = 2
 text = "Sonidos"
 
-[node name="Musica" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer"]
+[node name="Musica" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer" unique_id=1407995497]
 layout_mode = 2
 text = "Musica"
 
-[node name="volver" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer"]
+[node name="volver" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer" unique_id=1905377651]
 layout_mode = 2
 text = "volver"
 
-[node name="Estamina" parent="." instance=ExtResource("7_chvf1")]
+[node name="Estamina" parent="." unique_id=1694723735 instance=ExtResource("7_chvf1")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -205,174 +207,174 @@ grow_horizontal = 1
 grow_vertical = 1
 scale = Vector2(0.999363, 1)
 
-[node name="Rocas" type="Node" parent="."]
+[node name="Rocas" type="Node" parent="." unique_id=319950549]
 
-[node name="rock_2-convcol2" parent="Rocas" instance=ExtResource("8_gnt17")]
+[node name="rock_2-convcol2" parent="Rocas" unique_id=1927816027 instance=ExtResource("8_gnt17")]
 transform = Transform3D(2.40202, 0, 0, 0, 4.20176, 0, 0, 0, 4.38342, 66.4367, -5.39467, -12.8458)
 
-[node name="rock_3-convcol2" parent="Rocas" instance=ExtResource("9_amk0r")]
+[node name="rock_3-convcol2" parent="Rocas" unique_id=1631978146 instance=ExtResource("9_amk0r")]
 transform = Transform3D(3.21423, 0, 0, 0, 6.88396, 0, 0, 0, 4.45458, 87.478, -36.1248, -40.281)
 
-[node name="rock_4-convcol2" parent="Rocas" instance=ExtResource("10_tg8ha")]
+[node name="rock_4-convcol2" parent="Rocas" unique_id=638017266 instance=ExtResource("10_tg8ha")]
 transform = Transform3D(5.85323, 0, 0, 0, 3.27591, 0, 0, 0, 5.01008, 68.1354, -16.6075, -30.1242)
 
-[node name="rock_5-convcol2" parent="Rocas" instance=ExtResource("11_a6tbp")]
+[node name="rock_5-convcol2" parent="Rocas" unique_id=2136077900 instance=ExtResource("11_a6tbp")]
 transform = Transform3D(2.92008, 0, 0, 0, 2.18104, 0, 0, 0, 4.72032, 76.5507, 27.0658, -12.9164)
 
-[node name="rock_6-convcol2" parent="Rocas" instance=ExtResource("12_vpa7x")]
+[node name="rock_6-convcol2" parent="Rocas" unique_id=827348145 instance=ExtResource("12_vpa7x")]
 transform = Transform3D(1.37316, -0.728971, 0, 0.591149, 1.69331, 0, 0, 0, 1.74364, 82.6807, 20.7137, -39.5232)
 
-[node name="rock_7-convcol2" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol2" parent="Rocas" unique_id=864055352 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(2.03046, 0, 0, 0, 1.4902, 0, 0, 0, 2.29184, 74.6497, 3.38329, 6.55047)
 
-[node name="rock_8-convcol2" parent="Rocas" instance=ExtResource("14_874gp")]
+[node name="rock_8-convcol2" parent="Rocas" unique_id=1750511622 instance=ExtResource("14_874gp")]
 transform = Transform3D(7.16159, -0.722349, 0, 0.831285, 6.22311, 0, 0, 0, 5.89851, 84.1108, 12.9339, -30.2122)
 
-[node name="rock_9-convcol2" parent="Rocas" instance=ExtResource("15_0o7fn")]
+[node name="rock_9-convcol2" parent="Rocas" unique_id=723359976 instance=ExtResource("15_0o7fn")]
 transform = Transform3D(1.03591, 0, 0, 0, 1.06169, 0, 0, 0, 1.30503, 83.3734, -1.17397, 34.6015)
 
-[node name="rock_10-convcol2" parent="Rocas" instance=ExtResource("17_dqhcp")]
+[node name="rock_10-convcol2" parent="Rocas" unique_id=2079146786 instance=ExtResource("17_dqhcp")]
 transform = Transform3D(0.341307, 0, 0, 0, 0.464349, 0, 0, 0, 0.96301, 88.8295, 26.2678, 30.0019)
 
-[node name="rock_11-convcol2" parent="Rocas" instance=ExtResource("17_874gp")]
+[node name="rock_11-convcol2" parent="Rocas" unique_id=1531960889 instance=ExtResource("17_874gp")]
 transform = Transform3D(0.291325, -5.55041, 1.99706, -0.0853569, 0.854988, 12.9639, -42.8529, -0.0394359, -0.0122466, 107.863, 37.3342, 14.0946)
 
-[node name="rock_7-convcol3" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol3" parent="Rocas" unique_id=1868666134 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(2.40808, -1.86394, 0, 1.83466, 2.44651, 0, 0, 0, 4.42658, 87.1768, -12.8022, -81.1285)
 
-[node name="rock_6-convcol3" parent="Rocas" instance=ExtResource("12_vpa7x")]
+[node name="rock_6-convcol3" parent="Rocas" unique_id=400021543 instance=ExtResource("12_vpa7x")]
 transform = Transform3D(1.64031, 0, 0, 0, 2.77391, -0.800501, 0, 0.973855, 2.28013, 79.1137, 19.4575, 50.135)
 
-[node name="rock_2-convcol3" parent="Rocas" instance=ExtResource("8_gnt17")]
+[node name="rock_2-convcol3" parent="Rocas" unique_id=357836611 instance=ExtResource("8_gnt17")]
 transform = Transform3D(3.85867, -0.66267, 0.0160686, -0.41067, -6.22647, 0.150981, 0, -0.203234, -4.67801, 88.2023, 125.399, 1.33708)
 
-[node name="rock_3-convcol3" parent="Rocas" instance=ExtResource("9_amk0r")]
+[node name="rock_3-convcol3" parent="Rocas" unique_id=1801185305 instance=ExtResource("9_amk0r")]
 transform = Transform3D(5.16342, -1.08569, 0.0163295, -0.549532, -10.2011, 0.153433, 0, -0.332968, -4.75395, 124.678, 168.458, 32.5007)
 
-[node name="rock_4-convcol3" parent="Rocas" instance=ExtResource("10_tg8ha")]
+[node name="rock_4-convcol3" parent="Rocas" unique_id=2024916658 instance=ExtResource("10_tg8ha")]
 transform = Transform3D(9.40279, -0.516652, 0.0183658, -1.00072, -4.85448, 0.172566, 0, -0.158451, -5.34679, 92.4531, 141.826, 20.6104)
 
-[node name="rock_5-convcol3" parent="Rocas" instance=ExtResource("11_a6tbp")]
+[node name="rock_5-convcol3" parent="Rocas" unique_id=539403215 instance=ExtResource("11_a6tbp")]
 transform = Transform3D(4.6909, -0.343977, 0.0173037, -0.499242, -3.23202, 0.162586, 0, -0.105494, -5.03756, 101.391, 71.57, -14.7016)
 
-[node name="rock_6-convcol4" parent="Rocas" instance=ExtResource("12_vpa7x")]
+[node name="rock_6-convcol4" parent="Rocas" unique_id=1020553991 instance=ExtResource("12_vpa7x")]
 transform = Transform3D(2.44451, -1.01721, 0.00639181, -1.37494, -1.80689, 0.0600577, -0.035979, -0.0618109, -1.86083, 108.529, 80.9775, 29.211)
 
-[node name="rock_7-convcol4" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol4" parent="Rocas" unique_id=21844398 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(3.2618, -0.235024, 0.00840136, -0.347146, -2.20829, 0.0789395, 0, -0.0720792, -2.44586, 99.3087, 111.161, -20.1334)
 
-[node name="rock_8-convcol3" parent="Rocas" instance=ExtResource("14_874gp")]
+[node name="rock_8-convcol3" parent="Rocas" unique_id=878641014 instance=ExtResource("14_874gp")]
 transform = Transform3D(12.0044, -1.91143, 0.0216226, -2.70367, -8.48205, 0.203167, -0.0460258, -0.280321, -6.29493, 111.946, 93.2068, 19.4246)
 
-[node name="rock_9-convcol3" parent="Rocas" instance=ExtResource("15_0o7fn")]
+[node name="rock_9-convcol3" parent="Rocas" unique_id=1520276148 instance=ExtResource("15_0o7fn")]
 transform = Transform3D(1.66412, -0.167442, 0.00478397, -0.177109, -1.57329, 0.0449503, 0, -0.0513527, -1.39274, 113.312, 117.914, -50.4358)
 
-[node name="rock_10-convcol3" parent="Rocas" instance=ExtResource("17_dqhcp")]
+[node name="rock_10-convcol3" parent="Rocas" unique_id=1782887430 instance=ExtResource("17_dqhcp")]
 transform = Transform3D(0.548285, -0.0732336, 0.00353018, -0.0583528, -0.688105, 0.0331697, 0, -0.0224599, -1.02773, 117.231, 74.1568, -46.625)
 
-[node name="rock_11-convcol3" parent="Rocas" instance=ExtResource("17_874gp")]
+[node name="rock_11-convcol3" parent="Rocas" unique_id=773152581 instance=ExtResource("17_874gp")]
 transform = Transform3D(0.167786, -8.70768, 0.926992, -1.47017, -0.409181, -19.7543, 47.4066, 0.0181291, -0.615898, 144.172, 53.0791, -29.809)
 
-[node name="rock_7-convcol5" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol5" parent="Rocas" unique_id=1252430437 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(4.25811, -1.9401, 0.0162269, -4.02156, -2.05213, 0.152468, -0.115168, -0.072896, -4.72407, 120.399, 130.591, 75.9028)
 
-[node name="rock_6-convcol5" parent="Rocas" instance=ExtResource("12_vpa7x")]
+[node name="rock_6-convcol5" parent="Rocas" unique_id=97744112 instance=ExtResource("12_vpa7x")]
 transform = Transform3D(7.86215, -1.10012, 0.361085, -0.836751, -10.3368, 3.39277, 0, -4.03285, -8.79465, 120.101, 112.528, -53.5261)
 
-[node name="rock_9-convcol4" parent="Rocas" instance=ExtResource("15_0o7fn")]
+[node name="rock_9-convcol4" parent="Rocas" unique_id=770212517 instance=ExtResource("15_0o7fn")]
 transform = Transform3D(2.817, 0, 0, 0, -1.47595, 0.554869, 0, -0.122798, -6.66917, 139.057, 160.326, -28.9195)
 
-[node name="rock_7-convcol6" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol6" parent="Rocas" unique_id=2031457744 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(3.98857, 0, 0, 0, 1.53645, 0, 0, 0, 9.01061, 113.962, 123.466, 81.3774)
 
-[node name="rock_4-convcol4" parent="Rocas" instance=ExtResource("10_tg8ha")]
+[node name="rock_4-convcol4" parent="Rocas" unique_id=1476343243 instance=ExtResource("10_tg8ha")]
 transform = Transform3D(12.7318, 0, 0, 0, 10.0394, 0, 0, 0, 15.9076, 100.172, 23.5872, 84.8554)
 
-[node name="rock_2-convcol4" parent="Rocas" instance=ExtResource("8_gnt17")]
+[node name="rock_2-convcol4" parent="Rocas" unique_id=160075105 instance=ExtResource("8_gnt17")]
 transform = Transform3D(2.29164, -1.37418, -0.0605958, -0.804048, -3.91659, -0.172706, 0, 0.173239, -4.3852, 141.338, 279.303, 7.8999)
 
-[node name="rock_3-convcol4" parent="Rocas" instance=ExtResource("9_amk0r")]
+[node name="rock_3-convcol4" parent="Rocas" unique_id=144300943 instance=ExtResource("9_amk0r")]
 transform = Transform3D(3.06653, -2.25139, -0.0615796, -1.07593, -6.41675, -0.17551, 0, 0.283826, -4.45639, 171.411, 302.013, 33.736)
 
-[node name="rock_4-convcol5" parent="Rocas" instance=ExtResource("10_tg8ha")]
+[node name="rock_4-convcol5" parent="Rocas" unique_id=1542231162 instance=ExtResource("10_tg8ha")]
 transform = Transform3D(5.58426, -1.07138, -0.0692588, -1.9593, -3.05358, -0.197396, 0, 0.135066, -5.01212, 146.749, 289.851, 24.5885)
 
-[node name="rock_5-convcol4" parent="Rocas" instance=ExtResource("11_a6tbp")]
+[node name="rock_5-convcol4" parent="Rocas" unique_id=1429115029 instance=ExtResource("11_a6tbp")]
 transform = Transform3D(2.78589, -0.713306, -0.0652532, -0.977463, -2.03301, -0.18598, 0, 0.0899244, -4.72225, 141.83, 243, -3.77073)
 
-[node name="rock_6-convcol6" parent="Rocas" instance=ExtResource("12_vpa7x")]
+[node name="rock_6-convcol6" parent="Rocas" unique_id=967847275 instance=ExtResource("12_vpa7x")]
 transform = Transform3D(1.10286, -1.23218, -0.0241039, -1.01441, -1.33792, -0.0686993, 0.0247119, 0.0697189, -1.74435, 148.531, 250.03, 35.8924)
 
-[node name="rock_7-convcol7" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol7" parent="Rocas" unique_id=25932176 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(1.93716, -0.487369, -0.0316821, -0.679675, -1.38907, -0.090298, 0, 0.0614413, -2.29277, 146.042, 267.619, -11.0296)
 
-[node name="rock_8-convcol4" parent="Rocas" instance=ExtResource("14_874gp")]
+[node name="rock_8-convcol4" parent="Rocas" unique_id=1121179890 instance=ExtResource("14_874gp")]
 transform = Transform3D(6.53839, -2.70792, -0.0815403, -3.18183, -5.56173, -0.2324, 0.0349633, 0.25646, -5.90092, 152.29, 256.582, 26.1907)
 
-[node name="rock_9-convcol5" parent="Rocas" instance=ExtResource("15_0o7fn")]
+[node name="rock_9-convcol5" parent="Rocas" unique_id=795531116 instance=ExtResource("15_0o7fn")]
 transform = Transform3D(0.988312, -0.347226, -0.0180406, -0.346761, -0.989638, -0.0514182, 0, 0.0437737, -1.30557, 155.437, 268.058, -39.2898)
 
-[node name="rock_10-convcol4" parent="Rocas" instance=ExtResource("17_dqhcp")]
+[node name="rock_10-convcol4" parent="Rocas" unique_id=1448347492 instance=ExtResource("17_dqhcp")]
 transform = Transform3D(0.325623, -0.151865, -0.0133125, -0.114249, -0.432834, -0.0379424, 0, 0.0191451, -0.963402, 151.779, 240.482, -33.2875)
 
-[node name="rock_11-convcol4" parent="Rocas" instance=ExtResource("17_874gp")]
+[node name="rock_11-convcol4" parent="Rocas" unique_id=1659794997 instance=ExtResource("17_874gp")]
 transform = Transform3D(1.07322, -13.3946, -4.35247, 1.51251, 4.29564, -13.5981, 41.9027, 0.18801, 0.602312, 214.978, 203.5, -16.8268)
 
-[node name="rock_7-convcol8" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol8" parent="Rocas" unique_id=28931097 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(1.66186, -2.5339, -0.0611925, -2.52158, -1.66693, -0.174406, 0.0763454, 0.100664, -4.42838, 164.047, 281.435, 75.7435)
 
-[node name="rock_6-convcol7" parent="Rocas" instance=ExtResource("12_vpa7x")]
+[node name="rock_6-convcol7" parent="Rocas" unique_id=224044877 instance=ExtResource("12_vpa7x")]
 transform = Transform3D(1.54039, -0.907273, 0.230884, -0.540463, -2.58585, 0.65805, 0, -0.835469, -2.28745, 144.588, 249.555, -53.7522)
 
-[node name="rock_2-convcol5" parent="Rocas" instance=ExtResource("8_gnt17")]
+[node name="rock_2-convcol5" parent="Rocas" unique_id=65938290 instance=ExtResource("8_gnt17")]
 transform = Transform3D(3.72322, 1.42175, 0.0298539, -0.87768, 6.0323, 0.0364739, -0.0168821, -0.0559888, 4.68783, 119.506, 148.154, 0.433716)
 
-[node name="rock_3-convcol5" parent="Rocas" instance=ExtResource("9_amk0r")]
+[node name="rock_3-convcol5" parent="Rocas" unique_id=1529874098 instance=ExtResource("9_amk0r")]
 transform = Transform3D(4.98218, 2.32932, 0.0303386, -1.17446, 9.88303, 0.037066, -0.0225905, -0.0917294, 4.76394, 139.685, 94.1835, -28.4956)
 
-[node name="rock_4-convcol6" parent="Rocas" instance=ExtResource("10_tg8ha")]
+[node name="rock_4-convcol6" parent="Rocas" unique_id=107142894 instance=ExtResource("10_tg8ha")]
 transform = Transform3D(9.07274, 1.10847, 0.0341219, -2.13873, 4.70309, 0.0416883, -0.0411382, -0.0436518, 5.35802, 118.004, 130.607, -17.9808)
 
-[node name="rock_5-convcol5" parent="Rocas" instance=ExtResource("11_a6tbp")]
+[node name="rock_5-convcol5" parent="Rocas" unique_id=5455047 instance=ExtResource("11_a6tbp")]
 transform = Transform3D(4.52624, 0.737997, 0.0321485, -1.06698, 3.13123, 0.0392773, -0.0205232, -0.0290625, 5.04814, 149.501, 194.94, 13.6993)
 
-[node name="rock_6-convcol8" parent="Rocas" instance=ExtResource("12_vpa7x")]
+[node name="rock_6-convcol8" parent="Rocas" unique_id=579905674 instance=ExtResource("12_vpa7x")]
 transform = Transform3D(2.72269, -0.358539, 0.0118753, 0.481429, 2.02711, 0.0145087, -0.0210849, -0.0134887, 1.86473, 152.718, 182.244, -29.693)
 
-[node name="rock_7-convcol9" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol9" parent="Rocas" unique_id=746309369 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(3.1473, 0.50424, 0.0156089, -0.741917, 2.13943, 0.0190701, -0.0142707, -0.0198571, 2.451, 134.817, 158.495, 21.1557)
 
-[node name="rock_8-convcol5" parent="Rocas" instance=ExtResource("14_874gp")]
+[node name="rock_8-convcol5" parent="Rocas" unique_id=166718793 instance=ExtResource("14_874gp")]
 transform = Transform3D(12.0465, 0.995882, 0.0401726, -1.40307, 8.55382, 0.0490808, -0.0657998, -0.0728956, 6.30814, 152.103, 169.868, -19.2882)
 
-[node name="rock_9-convcol6" parent="Rocas" instance=ExtResource("15_0o7fn")]
+[node name="rock_9-convcol6" parent="Rocas" unique_id=289851299 instance=ExtResource("15_0o7fn")]
 transform = Transform3D(1.60571, 0.359245, 0.00888813, -0.378516, 1.52423, 0.010859, -0.00728071, -0.0141472, 1.39567, 146.183, 148.347, 51.7779)
 
-[node name="rock_10-convcol5" parent="Rocas" instance=ExtResource("17_dqhcp")]
+[node name="rock_10-convcol5" parent="Rocas" unique_id=796360292 instance=ExtResource("17_dqhcp")]
 transform = Transform3D(0.52904, 0.157121, 0.00655872, -0.124711, 0.666647, 0.00801309, -0.00239881, -0.00618749, 1.02989, 163.962, 188.149, 45.7275)
 
-[node name="rock_11-convcol5" parent="Rocas" instance=ExtResource("17_874gp")]
+[node name="rock_11-convcol5" parent="Rocas" unique_id=238326570 instance=ExtResource("17_874gp")]
 transform = Transform3D(-0.00985729, -8.17094, 7.49, -0.53413, 3.30411, 18.5202, -47.356, -0.035566, -0.210451, 196.003, 198.341, 27.8457)
 
-[node name="rock_7-convcol10" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol10" parent="Rocas" unique_id=1484533035 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(5.27664, -1.14554, 0.0301478, 2.35359, 2.56798, 0.036833, -0.0519158, -0.012685, 4.73399, 147.394, 129.947, -73.801)
 
-[node name="rock_6-convcol9" parent="Rocas" instance=ExtResource("12_vpa7x")]
+[node name="rock_6-convcol9" parent="Rocas" unique_id=658804311 instance=ExtResource("12_vpa7x")]
 transform = Transform3D(7.58618, 2.41424, -0.663523, -1.7883, 10.1729, -2.98736, -0.0343977, 3.56487, 8.97426, 154.361, 151.22, 54.5894)
 
-[node name="rock_9-convcol7" parent="Rocas" instance=ExtResource("15_0o7fn")]
+[node name="rock_9-convcol7" parent="Rocas" unique_id=882362448 instance=ExtResource("15_0o7fn")]
 transform = Transform3D(2.62127, 0.484503, -0.0916753, -0.919703, 1.3809, -0.261286, 0, 0.0604659, 6.70173, 156.551, 98.9373, 32.4544)
 
-[node name="rock_7-convcol11" parent="Rocas" instance=ExtResource("13_dqhcp")]
+[node name="rock_7-convcol11" parent="Rocas" unique_id=1630199566 instance=ExtResource("13_dqhcp")]
 transform = Transform3D(3.80529, -0.502493, -0.124562, -1.33513, -1.43217, -0.355017, 0, 0.0633478, -9.01428, 143.56, 138.673, -79.636)
 
-[node name="rock_4-convcol7" parent="Rocas" instance=ExtResource("10_tg8ha")]
+[node name="rock_4-convcol7" parent="Rocas" unique_id=1950600862 instance=ExtResource("10_tg8ha")]
 transform = Transform3D(12.1467, -3.28339, -0.219904, -4.26181, -9.35808, -0.626755, 0, 0.413927, -15.914, 162.745, 237.405, -88.2307)
 
-[node name="rock_4-convcol8" parent="Rocas" instance=ExtResource("10_tg8ha")]
+[node name="rock_4-convcol8" parent="Rocas" unique_id=816386787 instance=ExtResource("10_tg8ha")]
 transform = Transform3D(-20.9344, 0, 43.0088, 0, 15.4539, 0, -56.5385, 0, -15.9248, 288.636, 197.819, 12.2684)
 
-[node name="rock_3-convcol6" parent="Rocas" instance=ExtResource("9_amk0r")]
+[node name="rock_3-convcol6" parent="Rocas" unique_id=41189887 instance=ExtResource("9_amk0r")]
 transform = Transform3D(4.99397, -2.80825, 0, 1.61946, 8.65987, 0, 0, 0, 6.39003, 176.973, 114.449, -62.7232)
 
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_host_pressed"]

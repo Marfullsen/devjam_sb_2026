@@ -2,6 +2,7 @@ extends Node3D
 
 var peer = ENetMultiplayerPeer.new()
 
+@export var rope_scene: PackedScene
 @export var player_scene: PackedScene
 
 @onready var pantalla_inicio = $PantallaInicio
@@ -15,13 +16,16 @@ var peer = ENetMultiplayerPeer.new()
 # PANEL SONIDO
 @onready var panel_opciones = $PantallaInicio/Control/PanelOpciones
 
-
 func _ready() -> void:
-
 	# Ocultar paneles secundarios
 	panel_coop.visible = false
 	panel_opciones.visible = false
+	multiplayer.connected_to_server.connect(_create_rope_if_needed)
+	multiplayer.peer_connected.connect(_create_rope_if_needed)
 
+func _create_rope_if_needed():
+		var rope = rope_scene.instantiate()
+		add_child(rope)
 
 # =====================================================
 # MENU PRINCIPAL
@@ -139,16 +143,23 @@ func _on_musica_pressed() -> void:
 # =====================================================
 
 func add_player(id):
-
 	if player_scene == null:
 		print("No hay Player Scene asignada")
 		return
-
 	var player = player_scene.instantiate()
-
 	player.name = str(id)
+	#call_deferred("add_child", player)
+	add_child(player)
 
-	call_deferred("add_child", player)
+	# Crear cuerda
+	await get_tree().process_frame
+	var players = get_tree().get_nodes_in_group("players")
+	if players.size() >= 2:
+		print("Creando cuerda")
+		print("Creando instancia")
+		var rope = rope_scene.instantiate()
+		#add_child(rope)
+		call_deferred("add_child", rope)
 
 
 # =====================================================
