@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5sgotdwy3428"]
+
+[ext_resource type="Script" uid="uid://buagtunfsuve1" path="res://Players/rope.gd" id="1_074ls"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7pric"]
+
+[node name="Rope" type="Node3D"]
+script = ExtResource("1_074ls")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_7pric")
