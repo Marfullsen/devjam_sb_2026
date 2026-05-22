@@ -111,7 +111,7 @@ Identidad y meme-marketing: El diseño de personajes una marraqueta, fauna chile
 Rejugabilidad: Con cinco biomas, gestión de recursos, crafteo y distintas combinaciones de roles, cada ascenso se siente distinto.
 La montaña no perdona, el viento corta como navaja, pero el pan de cada día... es salvar vidas. ¿Tienes lo que se necesita para mantener al equipo unido, o el tesoro de la cumbre los separará para siempre? Asegura tu arnés. Esto es Climb Together.
 
-> > [!NOTE]
+> [!NOTE]
 > Pitch descargable en formato PDF: [Pitch_Climb_Together.pdf](docs\pdf\Pitch_Climb_Together.pdf)
 
 
