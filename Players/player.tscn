@@ -14,17 +14,20 @@ script/source = "extends CharacterBody3D
 @export var jump_force: float = 4.8
 
 # =====================================================
+# ROPE
+# =====================================================
+
+@export var rope_max_distance := 8.0
+@export var rope_force := 30.0
+
+# =====================================================
 # ESCALADA
 # =====================================================
 
-@export var stick_to_wall_force: float = 12.0
+@export var stick_to_wall_force: float = 1.5
 @export var climb_friction: float = 15.0
-
-# MEMORIA DE ESCALADA
 @export var climb_memory_time: float = 0.2
-
-# SUAVIZADO DE NORMALES
-@export var normal_smooth_speed: float = 10.0
+@export var normal_smooth_speed: float = 12.0
 
 # =====================================================
 # ESTAMINA
@@ -57,10 +60,22 @@ var climb_memory: float = 0.0
 # =====================================================
 
 @onready var neck: Node3D = $CollisionShape3D/Neck
-@onready var climb_ray: RayCast3D = $CollisionShape3D/Neck/Camera3D/ClimbRay_foot
-@onready var camara = $CollisionShape3D/Neck/Camera3D
+@onready var camara: Camera3D = $CollisionShape3D/Neck/Camera3D
 
-# HUD ESTAMINA
+# =====================================================
+# RAYCASTS
+# =====================================================
+
+@onready var climb_ray_center: RayCast3D = $CollisionShape3D/Neck/ClimbRay_Central
+@onready var climb_ray_right: RayCast3D = $CollisionShape3D/Neck/ClimbRay_Right
+@onready var climb_ray_left: RayCast3D = $CollisionShape3D/Neck/ClimbRay_Left
+@onready var climb_ray_up: RayCast3D = $CollisionShape3D/Neck/ClimbRay_Up
+@onready var climb_ray_down: RayCast3D = $CollisionShape3D/Neck/ClimbRay_Foot
+
+# =====================================================
+# HUD
+# =====================================================
+
 @onready var stamina_ui = $\"../Estamina/Estamina/Control\"
 
 # =====================================================
@@ -75,6 +90,7 @@ var camera_rotation_x: float = 0.0
 # =====================================================
 
 func _enter_tree() -> void:
+
 	set_multiplayer_authority(name.to_int())
 
 # =====================================================
@@ -89,22 +105,35 @@ func _ready() -> void:
 
 	stamina = max_stamina
 
-	# HUD
-	stamina_ui.update_stamina(stamina, max_stamina)
+	add_to_group(\"players\")
 
-	# RAYCAST
-	if climb_ray:
+	stamina_ui.update_stamina(
+		stamina,
+		max_stamina
+	)
 
-		climb_ray.enabled = true
+# =====================================================
+# OBTENER RAYCASTS
+# =====================================================
 
-		# MÁS LARGO PARA EVITAR BUGS
-		climb_ray.target_position = Vector3(0, 0, -4.0)
+func get_climb_rays() -> Array:
+
+	return [
+		climb_ray_center,
+		climb_ray_right,
+		climb_ray_left,
+		climb_ray_up,
+		climb_ray_down
+	]
 
 # =====================================================
 # INPUT
 # =====================================================
 
 func _input(event: InputEvent) -> void:
+
+	if !is_multiplayer_authority():
+		return
 
 	if Input.is_action_just_pressed(\"quit\"):
 
@@ -116,41 +145,30 @@ func _input(event: InputEvent) -> void:
 		var horiz = -event.relative.x * mouse_sensitivity
 		var vert = -event.relative.y * mouse_sensitivity
 
-		# =====================================================
-		# ROTACIÓN VERTICAL
-		# =====================================================
-
 		camera_rotation_x += vert
-
-		# =====================================================
-		# ROTACIÓN HORIZONTAL
-		# =====================================================
 
 		if is_climbing:
 
-			if neck:
+			neck.rotation.y += horiz
 
-				neck.rotation.y += horiz
+			neck.rotation.y = clamp(
+				neck.rotation.y,
+				deg_to_rad(-climb_camera_horizontal_limit),
+				deg_to_rad(climb_camera_horizontal_limit)
+			)
 
-				neck.rotation.y = clamp(
-					neck.rotation.y,
-					deg_to_rad(-climb_camera_horizontal_limit),
-					deg_to_rad(climb_camera_horizontal_limit)
-				)
-
-				camera_rotation_x = clamp(
-					camera_rotation_x,
-					deg_to_rad(-climb_camera_vertical_limit),
-					deg_to_rad(climb_camera_vertical_limit)
-				)
+			camera_rotation_x = clamp(
+				camera_rotation_x,
+				deg_to_rad(-climb_camera_vertical_limit),
+				deg_to_rad(climb_camera_vertical_limit)
+			)
 
 		else:
 
 			body_rotation_y += horiz
 			rotation.y = body_rotation_y
 
-			if neck:
-				neck.rotation.y = 0
+			neck.rotation.y = 0
 
 			camera_rotation_x = clamp(
 				camera_rotation_x,
@@ -158,26 +176,32 @@ func _input(event: InputEvent) -> void:
 				deg_to_rad(85)
 			)
 
-		if neck:
-			neck.rotation.x = camera_rotation_x
+		neck.rotation.x = camera_rotation_x
 
 # =====================================================
-# PHYSICS PROCESS
+# PHYSICS
 # =====================================================
 
 func _physics_process(delta: float) -> void:
 
-	# =====================================================
-	# DETECCIÓN DE PARED
-	# =====================================================
-
-	var touching_wall = (
-		climb_ray
-		and climb_ray.is_colliding()
-	)
+	if !is_multiplayer_authority():
+		return
 
 	# =====================================================
-	# MEMORIA DE ESCALADA
+	# DETECTAR PARED
+	# =====================================================
+
+	var touching_wall := false
+
+	for ray in get_climb_rays():
+
+		if ray.is_colliding():
+
+			touching_wall = true
+			break
+
+	# =====================================================
+	# MEMORIA ESCALADA
 	# =====================================================
 
 	if touching_wall:
@@ -195,39 +219,67 @@ func _physics_process(delta: float) -> void:
 	is_climbing = (
 		Input.is_action_pressed(\"Trepar\")
 		and climb_memory > 0.0
-		and stamina > 0
+		and stamina > 0.0
 		and !exhausted
 	)
 
 	# =====================================================
-	# SUAVIZAR NORMALES
+	# AJUSTES DEL SUELO
+	# =====================================================
+
+	set_floor_stop_on_slope_enabled(!is_climbing)
+
+	# =====================================================
+	# PROMEDIAR NORMALES
 	# =====================================================
 
 	if touching_wall:
 
-		var target_normal = climb_ray.get_collision_normal()
+		var normals := []
 
-		climb_normal = climb_normal.slerp(
-			target_normal,
-			normal_smooth_speed * delta
-		).normalized()
+		for ray in get_climb_rays():
+
+			if ray.is_colliding():
+
+				normals.append(
+					ray.get_collision_normal()
+				)
+
+		if normals.size() > 0:
+
+			var avg_normal := Vector3.ZERO
+
+			for n in normals:
+
+				avg_normal += n
+
+			avg_normal /= normals.size()
+
+			climb_normal = climb_normal.slerp(
+				avg_normal.normalized(),
+				normal_smooth_speed * delta
+			).normalized()
 
 	# =====================================================
-	# SISTEMA DE ESTAMINA
+	# ESTAMINA
 	# =====================================================
 
 	if is_climbing:
 
 		stamina -= stamina_drain * delta
-		stamina = clamp(stamina, 0.0, max_stamina)
 
-		stamina_ui.update_stamina(stamina, max_stamina)
+		stamina = clamp(
+			stamina,
+			0.0,
+			max_stamina
+		)
 
-		# =====================================================
-		# SIN ESTAMINA = CAER
-		# =====================================================
+		stamina_ui.update_stamina(
+			stamina,
+			max_stamina
+		)
 
-		if stamina <= 0:
+		if stamina <= 0.0:
 
 			exhausted = true
 			is_climbing = false
@@ -237,15 +289,20 @@ func _physics_process(delta: float) -> void:
 	else:
 
 		stamina += stamina_recovery * delta
-		stamina = clamp(stamina, 0.0, max_stamina)
 
-		stamina_ui.update_stamina(stamina, max_stamina)
+		stamina = clamp(
+			stamina,
+			0.0,
+			max_stamina
+		)
 
-		# =====================================================
-		# RECUPERAR CANSANCIO
-		# =====================================================
+		stamina_ui.update_stamina(
+			stamina,
+			max_stamina
+		)
 
 		if stamina >= 30.0:
+
 			exhausted = false
 
 	# =====================================================
@@ -253,86 +310,104 @@ func _physics_process(delta: float) -> void:
 	# =====================================================
 
 	if is_climbing:
+
 		_climbing_movement(delta)
+
 	else:
+
 		_normal_movement(delta)
+
+	# =====================================================
+	# ROPE PHYSICS
+	# =====================================================
+
+	var players = get_tree().get_nodes_in_group(\"players\")
+
+	if players.size() >= 2:
+
+		var other_player = null
+
+		for p in players:
+
+			if p != self:
+
+				other_player = p
+				break
+
+		if other_player != null:
+
+			var offset = (
+				other_player.global_position -
+				global_position
+			)
+
+			var distance = offset.length()
+
+			if distance > rope_max_distance:
+
+				var direction = offset.normalized()
+
+				var excess = (
+					distance -
+					rope_max_distance
+				)
+
+				var force = (
+					direction *
+					excess *
+					rope_force
+				)
+
+				velocity += force * delta
 
 	move_and_slide()
 
 # =====================================================
-# MOVIMIENTO ESCALADA
+# ESCALADA
 # =====================================================
 
 func _climbing_movement(delta: float) -> void:
 
-	var camera_forward = -neck.global_transform.basis.z.normalized()
+	velocity = Vector3.ZERO
 
-	# =====================================================
-	# DIRECCIÓN DERECHA SOBRE LA PARED
-	# =====================================================
-
-	var right = climb_normal.cross(camera_forward)
-
-	# EVITAR BUGS SI LAS DIRECCIONES SON PARALELAS
-	if right.length() < 0.05:
-
-		right = neck.global_transform.basis.x
-
-	right = right.normalized()
-
-	# =====================================================
-	# CORREGIR ORIENTACIÓN
-	# =====================================================
-
-	if right.dot(neck.global_transform.basis.x) < 0:
-		right = -right
-
-	# =====================================================
-	# DIRECCIÓN ARRIBA SOBRE PARED
-	# =====================================================
-
-	var up_on_wall = right.cross(climb_normal).normalized()
-
-	# =====================================================
-	# INPUT
-	# =====================================================
-
-	var input = Input.get_vector(
+	var input_dir := Input.get_vector(
 		\"Izquierda\",
 		\"Derecha\",
 		\"Adelante\",
 		\"Atras\"
 	)
 
-	# =====================================================
-	# MOVIMIENTO BASE
-	# =====================================================
+	var right := Vector3.UP.cross(
+		climb_normal
+	).normalized()
 
-	var target_velocity = (
-		right * input.x * climb_speed +
-		up_on_wall * input.y * climb_speed
+	if right.dot(
+		camara.global_transform.basis.x
+	) < 0:
+
+		right = -right
+
+	var up_on_wall := right.cross(
+		climb_normal
+	).normalized()
+
+	var move_direction := (
+		right * input_dir.x +
+		up_on_wall * input_dir.y
 	)
 
-	# =====================================================
-	# SUAVIZAR MOVIMIENTO
-	# =====================================================
+	if move_direction.length() > 0.01:
 
-	velocity = velocity.lerp(
-		target_velocity,
-		8.0 * delta
+		move_direction = move_direction.normalized()
+
+	velocity = move_direction * climb_speed
+
+	velocity += (
+		-climb_normal *
+		stick_to_wall_force
 	)
 
-	# =====================================================
-	# PEGARSE A LA PARED
-	# =====================================================
-
-	velocity += -climb_normal * stick_to_wall_force
-
-	# =====================================================
-	# FRICCIÓN
-	# =====================================================
-
-	if input.length() < 0.1:
+	if input_dir.length() < 0.1:
 
 		velocity = velocity.lerp(
 			Vector3.ZERO,
@@ -345,33 +420,25 @@ func _climbing_movement(delta: float) -> void:
 
 func _normal_movement(delta: float) -> void:
 
-	# =====================================================
-	# GRAVEDAD
-	# =====================================================
-
 	if not is_on_floor():
 
 		velocity.y -= gravity * delta
 
-	# =====================================================
-	# INPUT MOVIMIENTO
-	# =====================================================
-
-	var input_dir = Input.get_vector(
+	var input_dir := Input.get_vector(
 		\"Izquierda\",
 		\"Derecha\",
 		\"Adelante\",
 		\"Atras\"
 	)
 
-	var direction = (
+	var direction := (
 		transform.basis *
-		Vector3(input_dir.x, 0, input_dir.y)
+		Vector3(
+			input_dir.x,
+			0,
+			input_dir.y
+		)
 	).normalized()
-
-	# =====================================================
-	# MOVIMIENTO
-	# =====================================================
 
 	if direction.length() > 0:
 
@@ -380,14 +447,22 @@ func _normal_movement(delta: float) -> void:
 
 	else:
 
-		velocity.x = move_toward(velocity.x, 0, 25)
-		velocity.z = move_toward(velocity.z, 0, 25)
+		velocity.x = move_toward(
+			velocity.x,
+			0.0,
+			25.0
+		)
 
-	# =====================================================
-	# SALTO
-	# =====================================================
+		velocity.z = move_toward(
+			velocity.z,
+			0.0,
+			25.0
+		)
 
-	if Input.is_action_just_pressed(\"Saltar\") and is_on_floor():
+	if (
+		Input.is_action_just_pressed(\"Saltar\")
+		and is_on_floor()
+	):
 
 		velocity.y = jump_force
 "
@@ -406,7 +481,7 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["players"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
 script = SubResource("GDScript_qe1pe")
 
@@ -421,8 +496,24 @@ debug_color = Color(0.95316, 0, 0.564501, 1)
 transform = Transform3D(0.999964, 0, 0.00842986, 0, 1, 0, -0.00842986, 0, 0.999964, -0.00930429, 0.63672, -0.324774)
 fov = 89.755
 
-[node name="ClimbRay_foot" type="RayCast3D" parent="CollisionShape3D/Neck/Camera3D"]
-transform = Transform3D(0.999964, 1.76314e-07, -0.00843004, -1.74846e-07, 1, 1.74846e-07, 0.00843004, -1.73366e-07, 0.999964, 0.00542819, -0.00117397, 0.459828)
+[node name="ClimbRay_Central" type="RayCast3D" parent="CollisionShape3D/Neck"]
+transform = Transform3D(1, 1.74846e-07, -1.75089e-07, -1.74846e-07, 1, 1.74846e-07, 1.75089e-07, -1.74846e-07, 1, 0, 0.635546, 0.134992)
+target_position = Vector3(0, 0, -1.5)
+
+[node name="ClimbRay_Right" type="RayCast3D" parent="CollisionShape3D/Neck"]
+transform = Transform3D(1, 3.49692e-07, -3.50178e-07, -3.00581e-07, 0.991308, 0.131565, 3.93141e-07, -0.131565, 0.991308, 0.747619, 0.660017, -0.0792511)
+target_position = Vector3(0, 0, -1.5)
+
+[node name="ClimbRay_Foot" type="RayCast3D" parent="CollisionShape3D/Neck"]
+transform = Transform3D(1, 3.49692e-07, -3.50178e-07, -1.76755e-07, 0.913304, 0.407279, 4.62241e-07, -0.407279, 0.913304, 8.7487e-08, -0.214454, -0.0792511)
+target_position = Vector3(0, 0, -1.5)
+
+[node name="ClimbRay_Left" type="RayCast3D" parent="CollisionShape3D/Neck"]
+transform = Transform3D(1, 3.49692e-07, -3.50178e-07, -3.00581e-07, 0.991308, 0.131565, 3.93141e-07, -0.131565, 0.991308, -0.610281, 0.721668, -0.0792511)
+target_position = Vector3(0, 0, -1.5)
+
+[node name="ClimbRay_Up" type="RayCast3D" parent="CollisionShape3D/Neck"]
+transform = Transform3D(1, 3.49692e-07, -3.50178e-07, -3.00581e-07, 0.991308, 0.131565, 3.93141e-07, -0.131565, 0.991308, 8.7487e-08, 1.09194, -0.0792511)
 target_position = Vector3(0, 0, -1.5)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -431,3 +522,5 @@ mesh = SubResource("CapsuleMesh_qe1pe")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_dju3o")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
