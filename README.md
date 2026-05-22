@@ -74,6 +74,9 @@ El juego participa _DevJam_ organizada por el CITT de San Bernardo, en la catego
 
 ## Pitch
 
+> [!NOTE]
+> Pitch descargable en formato PDF: [Pitch_Climb_Together.pdf](docs\pdf\Pitch_Climb_Together.pdf)
+
 ### CLIMB TOGETHER
 
 "Una aventura donde la verdadera altura se mide en equipo"
