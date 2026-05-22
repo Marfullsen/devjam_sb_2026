@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqpdwn6vexrv5"]
+[gd_scene format=3 uid="uid://dqpdwn6vexrv5"]
 
 [sub_resource type="GDScript" id="GDScript_qe1pe"]
 script/source = "extends CharacterBody3D
@@ -6,7 +6,7 @@ script/source = "extends CharacterBody3D
 # =====================================================
 # MOVIMIENTO
 # =====================================================
-
+@export var external_velocity: Vector3 = Vector3.ZERO
 @export var speed: float = 6.0
 @export var climb_speed: float = 5.0
 @export var gravity: float = 9.8
@@ -240,9 +240,15 @@ func _physics_process(delta: float) -> void:
 
 			avg_normal /= normals.size()
 
+			var weight = clamp(
+			normal_smooth_speed * delta,
+			0.0,
+			1.0
+			)
+
 			climb_normal = climb_normal.slerp(
-				avg_normal.normalized(),
-				normal_smooth_speed * delta
+			avg_normal.normalized(),
+			weight
 			).normalized()
 
 	# =====================================================
@@ -302,6 +308,13 @@ func _physics_process(delta: float) -> void:
 
 		_normal_movement(delta)
 
+	velocity += external_velocity
+
+	external_velocity = external_velocity.lerp(
+	Vector3.ZERO,
+	8.0 * delta
+)
+
 	move_and_slide()
 
 # =====================================================
@@ -311,7 +324,8 @@ func _physics_process(delta: float) -> void:
 func _climbing_movement(delta: float) -> void:
 
 	# Elimina residuos de gravedad
-	velocity = Vector3.ZERO
+	velocity.x = 0.0
+	velocity.z = 0.0
 
 	var input_dir := Input.get_vector(
 		\"Izquierda\",
@@ -324,15 +338,30 @@ func _climbing_movement(delta: float) -> void:
 	# DIRECCIONES RELATIVAS A LA PARED
 	# =====================================================
 
-	var right := Vector3.UP.cross(climb_normal).normalized()
+	# SAFETY CHECK: If climb_normal is parallel to UP, we can't build a basis
+	if abs(climb_normal.dot(Vector3.UP)) > 0.99:
+		# Wall is nearly horizontal (floor/ceiling), can't climb here
+		is_climbing = false
+		return
 
-# Evita inversión de controles
+	var right := Vector3.UP.cross(climb_normal)
+
+	if right.length() < 0.001:
+		right = Vector3.RIGHT
+	else:
+		right = right.normalized()
+
+	# Evita inversión de controles
 	if right.dot(camara.global_transform.basis.x) < 0:
-
 		right = -right
 
-# ESTA ES LA LÍNEA IMPORTANTE
+	# ESTA ES LA LÍNEA IMPORTANTE
 	var up_on_wall := right.cross(climb_normal).normalized()
+	
+	# Additional safety: if up_on_wall is invalid, abort climbing
+	if up_on_wall.length() < 0.99:
+		is_climbing = false
+		return
 
 	# =====================================================
 	# DIRECCIÓN FINAL
@@ -351,7 +380,9 @@ func _climbing_movement(delta: float) -> void:
 	# VELOCIDAD
 	# =====================================================
 
-	velocity = move_direction * climb_speed
+	velocity.x = move_direction.x * climb_speed
+	velocity.y = move_direction.y * climb_speed
+	velocity.z = move_direction.z * climb_speed
 
 	# =====================================================
 	# PEGARSE A LA PARED
@@ -406,8 +437,17 @@ func _normal_movement(delta: float) -> void:
 
 	if direction.length() > 0:
 
-		velocity.x = direction.x * speed
-		velocity.z = direction.z * speed
+		velocity.x = move_toward(
+		velocity.x,
+		direction.x * speed,
+		speed * 10.0 * delta
+		)
+
+		velocity.z = move_toward(
+			velocity.z,
+			direction.z * speed,
+			speed * 10.0 * delta
+		)
 
 	else:
 
@@ -446,46 +486,46 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" unique_id=847358642]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
 script = SubResource("GDScript_qe1pe")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=275139268]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.516014, 0)
 shape = SubResource("CapsuleShape3D_fq5u1")
 debug_color = Color(0.95316, 0, 0.564501, 1)
 
-[node name="Neck" type="Node3D" parent="CollisionShape3D"]
+[node name="Neck" type="Node3D" parent="CollisionShape3D" unique_id=1090527483]
 
-[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck"]
+[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/Neck" unique_id=791753623]
 transform = Transform3D(0.999964, 0, 0.00842986, 0, 1, 0, -0.00842986, 0, 0.999964, -0.00930429, 0.63672, -0.324774)
 fov = 89.755
 
-[node name="ClimbRay_Central" type="RayCast3D" parent="CollisionShape3D/Neck"]
+[node name="ClimbRay_Central" type="RayCast3D" parent="CollisionShape3D/Neck" unique_id=1669343115]
 transform = Transform3D(1, 1.74846e-07, -1.75089e-07, -1.74846e-07, 1, 1.74846e-07, 1.75089e-07, -1.74846e-07, 1, 0, 0.635546, 0.134992)
 target_position = Vector3(0, 0, -1.5)
 
-[node name="ClimbRay_Right" type="RayCast3D" parent="CollisionShape3D/Neck"]
+[node name="ClimbRay_Right" type="RayCast3D" parent="CollisionShape3D/Neck" unique_id=559824897]
 transform = Transform3D(1, 3.49692e-07, -3.50178e-07, -3.00581e-07, 0.991308, 0.131565, 3.93141e-07, -0.131565, 0.991308, 0.747619, 0.660017, -0.0792511)
 target_position = Vector3(0, 0, -1.5)
 
-[node name="ClimbRay_Foot" type="RayCast3D" parent="CollisionShape3D/Neck"]
+[node name="ClimbRay_Foot" type="RayCast3D" parent="CollisionShape3D/Neck" unique_id=755247782]
 transform = Transform3D(1, 3.49692e-07, -3.50178e-07, -1.76755e-07, 0.913304, 0.407279, 4.62241e-07, -0.407279, 0.913304, 8.7487e-08, -0.214454, -0.0792511)
 target_position = Vector3(0, 0, -1.5)
 
-[node name="ClimbRay_Left" type="RayCast3D" parent="CollisionShape3D/Neck"]
+[node name="ClimbRay_Left" type="RayCast3D" parent="CollisionShape3D/Neck" unique_id=1507469567]
 transform = Transform3D(1, 3.49692e-07, -3.50178e-07, -3.00581e-07, 0.991308, 0.131565, 3.93141e-07, -0.131565, 0.991308, -0.610281, 0.721668, -0.0792511)
 target_position = Vector3(0, 0, -1.5)
 
-[node name="ClimbRay_Up" type="RayCast3D" parent="CollisionShape3D/Neck"]
+[node name="ClimbRay_Up" type="RayCast3D" parent="CollisionShape3D/Neck" unique_id=2120086860]
 transform = Transform3D(1, 3.49692e-07, -3.50178e-07, -3.00581e-07, 0.991308, 0.131565, 3.93141e-07, -0.131565, 0.991308, 8.7487e-08, 1.09194, -0.0792511)
 target_position = Vector3(0, 0, -1.5)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=768748299]
 transform = Transform3D(0.780578, 0, 0, 0, 0.888841, 0, 0, 0, 0.772459, -0.00221679, 0.494685, 4.52995e-06)
 mesh = SubResource("CapsuleMesh_qe1pe")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=962850231]
 replication_config = SubResource("SceneReplicationConfig_dju3o")
 
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1929835193]

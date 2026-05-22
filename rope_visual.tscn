@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://da84sn2caec7i"]
+
+[ext_resource type="Script" uid="uid://csvqj4qmxbvmv" path="res://rope_visual.gd" id="1_wi4oo"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7d71c"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 1.0
+
+[node name="rope_visual" type="Node3D" unique_id=1430538519]
+script = ExtResource("1_wi4oo")
+
+[node name="RopeMesh" type="MeshInstance3D" parent="." unique_id=794900158]
+mesh = SubResource("CylinderMesh_7d71c")

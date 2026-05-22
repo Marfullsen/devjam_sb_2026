@@ -12,7 +12,8 @@ var rotation_y: float = 0.0
 @onready var camera: Camera3D = $Neck/Camera3D
 
 func _ready():
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if is_multiplayer_authority():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if neck:
 		neck.position.y = 1.6
 

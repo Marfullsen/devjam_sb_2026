@@ -2,31 +2,55 @@ extends Node3D
 
 var peer = ENetMultiplayerPeer.new()
 @export var player_scene :PackedScene
+@export var rope_visual_scene: PackedScene
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	multiplayer.peer_disconnected.connect(del_player)
 
+func _process(_delta):
+	create_local_rope_if_possible()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func create_local_rope_if_possible():
+	if has_node("LocalRope"):
+		return
+	var players := []
+	for child in get_children():
+		if child is CharacterBody3D:
+			players.append(child)
+	if players.size() != 2:
+		return
+	var rope = rope_visual_scene.instantiate()
+	rope.name = "LocalRope"
+	rope.player_a = players[0]
+	rope.player_b = players[1]
+	add_child(rope)
 
+func _on_peer_connected(id):
+	print("PEER CONNECTED: ", id)
+	if multiplayer.is_server():
+		add_player(id)
 
-func _on_host_pressed() -> void:
+func _player_connected(id):
+	add_player(id)
+	rpc("_spawn_existing_players")
+
+func _on_host_pressed():
 	peer.create_server(1027)
 	multiplayer.multiplayer_peer = peer
-	multiplayer.peer_connected.connect(add_player)
-	add_player()
+	add_player(multiplayer.get_unique_id())
 	$PantallaInicio.hide()
 
 func add_player(id = 1):
+	if has_node(str(id)):
+		return
 	var player = player_scene.instantiate()
 	player.name = str(id)
-	call_deferred("add_child",player)
+	add_child(player)
+	player.set_multiplayer_authority(id)
+	print("PLAYER ADDED: ", id)
 
 func exit_game(id):
-	multiplayer.peer_disconnected.connect(del_player)
 	del_player(id)
 
 func _on_join_pressed() -> void:
