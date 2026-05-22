@@ -378,7 +378,7 @@ transform = Transform3D(3.57329, -0.70355, -0.174402, -1.86934, -1.34485, -0.333
 transform = Transform3D(11.4061, -4.59714, -0.307892, -5.96704, -8.78753, -0.588542, 4.29776e-08, 0.413927, -15.914, 175.861, 231.755, -88.2307)
 
 [node name="rock_4-convcol8" parent="Rocas" instance=ExtResource("10_tg8ha")]
-transform = Transform3D(-20.9344, 0, 43.0088, 0, 15.4539, 0, -56.5385, 0, -15.9248, 288.636, 197.819, 12.2684)
+transform = Transform3D(-20.9344, 0, 43.0088, 0, 15.4539, 0, -56.5385, 0, -15.9248, 314.018, 197.819, 12.2684)
 
 [node name="rock_3-convcol6" parent="Rocas" instance=ExtResource("9_amk0r")]
 transform = Transform3D(5.17516, -1.53155, 0, 0.883213, 8.97407, 0, 0, 0, 6.39003, 172.229, 108.032, -62.7232)
