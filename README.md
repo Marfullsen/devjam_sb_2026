@@ -72,6 +72,52 @@ El juego participa _DevJam_ organizada por el CITT de San Bernardo, en la catego
     <img src="./docs/img/banner_instagram.jpg" alt="banner-devjam" width="400">
 </div>
 
+## Pitch
+
+> [!NOTE]
+> Pitch descargable en formato PDF: [Pitch_Climb_Together.pdf](docs\pdf\Pitch_Climb_Together.pdf)
+
+### CLIMB TOGETHER
+
+"Una aventura donde la verdadera altura se mide en equipo"
+
+¿Qué tal si mezclas el folclore chileno con la tensión de sobrevivir y para rematar, una marraqueta?
+
+Eso es Climb Together: un juego cooperativo de escalada en 3D donde el equipo lo es absolutamente todo. A cargo de un pan batido con alma de héroe, un grupo de rescatistas tiene que enfrentarse a una montaña de miedo dividida en cinco biomas implacables para salvar a tres escaladores perdidos. Pero ojo: la cumbre no solo guarda frío, también esconde un secreto que puede destrozar hasta la amistad más sólida.
+
+##### Pilares del juego
+
+1. Cooperación con roles únicos
+
+Aquí nadie escala solo. Para salir adelante hay que combinar las habilidades de un equipo experto (y bien chileno):
+
+- La Marraqueta (Líder/Protagonista): Es el pegamento del equipo. Mantiene la cohesión y la moral alta cuando todo se pone difícil.
+- El Explorador: Manda a su cóndor de confianza para cambiar la perspectiva, revelando rutas ocultas, grietas peligrosas y el mejor camino.
+- El Ancla: El coloso del grupo. Tiene la fuerza bruta para sostener el peso de varios compañeros colgando al vacío en los momentos críticos.
+- El Ingeniero: El cerebro táctico. Fabrica herramientas esenciales sobre la marcha estacas, cuerdas reforzadas, poleas para superar obstáculos que parecen imposibles.
+- El Curandero y el Recolector: Imprescindibles para mantener la stamina, curar la hipotermia y conseguir recursos en plena pared de roca.
+
+2. La naturaleza como enemigo (5 biomas)
+
+La montaña es casi un personaje más. Los jugadores enfrentan cinco zonas distintas, cada una con sus propias reglas de supervivencia: desde bosques cordilleranos con vientos traicioneros que te desestabilizan el agarre, hasta cumbres heladas extremas, es una carrera contra el reloj.
+
+3. Una historia con sabor y misterio
+
+Lo que empieza como una misión de rescate noble se convierte en thriller psicológico y aventura. Al llegar arriba, los rescatistas descubren un tesoro oculto. Y ese hallazgo pone a prueba la lealtad del grupo, revelando las verdaderas (y oscuras) razones detrás de la desaparición de los escaladores. ¿Ganará la codicia o la amistad?
+
+¿Por qué va a funcionar?
+
+Fiebre cooperativa: Juegos como It Takes Two o Overcooked demuestran que la gente adora títulos donde la coordinación es clave. Climb Together lleva esa tensión a la escalada vertical.
+
+Identidad y meme-marketing: El diseño de personajes una marraqueta, fauna chilena genera un atractivo visual inmediato, muy fácil de compartir en redes como TikTok o Twitch.
+
+Rejugabilidad: Con cinco biomas, gestión de recursos, crafteo y distintas combinaciones de roles, cada ascenso se siente distinto.
+La montaña no perdona, el viento corta como navaja, pero el pan de cada día... es salvar vidas. ¿Tienes lo que se necesita para mantener al equipo unido, o el tesoro de la cumbre los separará para siempre? Asegura tu arnés. Esto es Climb Together.
+
+> [!NOTE]
+> Pitch descargable en formato PDF: [Pitch_Climb_Together.pdf](docs\pdf\Pitch_Climb_Together.pdf)
+
+
 ## 🚀 Instalación y Configuración
 
 ### Requisitos
