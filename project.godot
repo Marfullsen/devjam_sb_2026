@@ -28,6 +28,7 @@ enabled=PackedStringArray()
 folder_colors={
 "res://HUD/": "orange",
 "res://Maps/": "red",
+"res://Modelos 3D/": "purple",
 "res://Players/": "blue",
 "res://Terrenos/": "green",
 "res://Textures/": "pink"
