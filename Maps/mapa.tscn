@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://di0tnhfao1rew" path="res://Textures/rock_12-convcol_WhatsApp Image 2026-05-21 at 1.08.jpg" id="4_dqhcp"]
 [ext_resource type="Texture2D" uid="uid://dkqmy3r5tsm6k" path="res://Textures/menu.png" id="6_dqhcp"]
 [ext_resource type="PackedScene" uid="uid://cvg56gjhppvmq" path="res://HUD/estamina.tscn" id="7_chvf1"]
-[ext_resource type="PackedScene" uid="uid://des8xh1yk1dk1" path="res://Terrenos/rock_2-convcol.glb" id="8_gnt17"]
+[ext_resource type="PackedScene" uid="uid://clalu4urski28" path="res://Terrenos/rock_2-convcol.glb" id="8_gnt17"]
 [ext_resource type="PackedScene" uid="uid://xrkgf683l8uo" path="res://Terrenos/rock_3-convcol.glb" id="9_amk0r"]
 [ext_resource type="PackedScene" uid="uid://2yq5vgxii5jr" path="res://Terrenos/rock_4-convcol.glb" id="10_tg8ha"]
 [ext_resource type="PackedScene" uid="uid://c36ad728xt5wb" path="res://Terrenos/rock_5-convcol.glb" id="11_a6tbp"]
@@ -24,6 +24,7 @@ albedo_texture = ExtResource("1_46we1")
 [sub_resource type="PlaneMesh" id="PlaneMesh_4cnpp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1eot7"]
+size = Vector3(1.59326, 1, 2.59106)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_874gp"]
 albedo_texture = ExtResource("4_dqhcp")
@@ -53,12 +54,12 @@ player_scene = ExtResource("2_dqhcp")
 transform = Transform3D(1.53303, 0, 0, 0, 0.998178, 0, 0, 0, 1.44933, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="piso_Bosque"]
-transform = Transform3D(62.7292, 0, 0, 0, 0.682252, 0, 0, 0, 51.5434, 18.0782, -0.0238233, 0.0119699)
+transform = Transform3D(62.7292, 0, 0, 0, 0.682252, 0, 0, 0, 64.2458, 18.0782, -0.0238233, 0.0119699)
 material_override = SubResource("StandardMaterial3D_a24vh")
 mesh = SubResource("PlaneMesh_4cnpp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="piso_Bosque"]
-transform = Transform3D(51.0369, 0, 0, 0, 1, 0, 0, 0, 47.8703, 10.9628, -0.375991, 0)
+transform = Transform3D(51.0369, 0, 0, 0, 1, 0, 0, 0, 47.8703, -4.17632, -0.375991, 0.134401)
 shape = SubResource("BoxShape3D_1eot7")
 debug_color = Color(0, 0.466667, 0.45098, 1)
 
@@ -81,7 +82,7 @@ environment = SubResource("Environment_a24vh")
 transform = Transform3D(1, 0, 0, 0, 0.741191, 0.671294, 0, -0.671294, 0.741191, -39.3774, 66.6715, 21.0314)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." groups=["escalable"]]
-transform = Transform3D(12.3892, 0, 0, 0, 27.244, 0, 0, 0, 1, 0, 13.3686, -6.47312)
+transform = Transform3D(-0.410334, 0, -0.999451, 0, 27.244, 0, 12.3824, 0, -0.0331203, 0, 13.3686, -6.47312)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 material_override = SubResource("StandardMaterial3D_chvf1")
@@ -375,10 +376,10 @@ transform = Transform3D(-20.9344, 0, 43.0088, 0, 15.4539, 0, -56.5385, 0, -15.92
 [node name="rock_3-convcol6" parent="Rocas" instance=ExtResource("9_amk0r")]
 transform = Transform3D(4.99397, -2.80825, 0, 1.61946, 8.65987, 0, 0, 0, 6.39003, 176.973, 114.449, -62.7232)
 
-[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_multijugador_pressed"]
-[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Jugar" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Jugar" to="." method="_on_jugar_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Jugar" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Sonido" to="." method="_on_sonido_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/salir" to="." method="_on_salir_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/PanelCoop/VBoxContainer/Crear" to="." method="_on_crear_pressed"]
