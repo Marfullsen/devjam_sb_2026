@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://bqnlhg3uhfvj1" path="res://Textures/Pasto.jpg" id="1_46we1"]
 [ext_resource type="Script" uid="uid://cvky7f4ov0alk" path="res://Maps/mapa.gd" id="1_a24vh"]
-[ext_resource type="Texture2D" uid="uid://dj7df2tbaedy4" path="res://Textures/Montaña.jpg" id="2_5h80n"]
-[ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="2_a24vh"]
+[ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="2_dqhcp"]
 [ext_resource type="Texture2D" uid="uid://cftikhkoq2eaf" path="res://Textures/pared escalada.jpg" id="4_5h80n"]
 [ext_resource type="Texture2D" uid="uid://di0tnhfao1rew" path="res://Textures/rock_12-convcol_WhatsApp Image 2026-05-21 at 1.08.jpg" id="4_dqhcp"]
+[ext_resource type="Texture2D" uid="uid://dkqmy3r5tsm6k" path="res://Textures/menu.png" id="6_dqhcp"]
 [ext_resource type="PackedScene" uid="uid://cvg56gjhppvmq" path="res://HUD/estamina.tscn" id="7_chvf1"]
 [ext_resource type="PackedScene" uid="uid://des8xh1yk1dk1" path="res://Terrenos/rock_2-convcol.glb" id="8_gnt17"]
 [ext_resource type="PackedScene" uid="uid://xrkgf683l8uo" path="res://Terrenos/rock_3-convcol.glb" id="9_amk0r"]
@@ -47,7 +47,7 @@ albedo_texture = ExtResource("4_5h80n")
 
 [node name="Mapa" type="Node3D"]
 script = ExtResource("1_a24vh")
-player_scene = ExtResource("2_a24vh")
+player_scene = ExtResource("2_dqhcp")
 
 [node name="piso_Bosque" type="StaticBody3D" parent="."]
 transform = Transform3D(1.53303, 0, 0, 0, 0.998178, 0, 0, 0, 1.44933, 0, 0, 0)
@@ -97,9 +97,9 @@ spawn_path = NodePath("..")
 [node name="PantallaInicio" type="CanvasLayer" parent="."]
 
 [node name="ImagenFondo" type="TextureRect" parent="PantallaInicio"]
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("2_5h80n")
+offset_right = 1163.0
+offset_bottom = 658.0
+texture = ExtResource("6_dqhcp")
 
 [node name="Control" type="Control" parent="PantallaInicio"]
 layout_mode = 3
@@ -118,22 +118,80 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 2.95
 anchor_bottom = 2.325
+offset_left = -203.0
+offset_top = -37.0
+offset_right = 211.0
+offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Titulo" type="Label" parent="PantallaInicio/Control/VBoxContainer"]
+[node name="multijugador" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 70
-text = "Climb Together"
+text = "multijugador"
 
-[node name="Host" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+[node name="Jugar" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
 layout_mode = 2
-text = "Host"
+text = "Jugar
+"
 
-[node name="Join" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+[node name="Sonido" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
 layout_mode = 2
-text = "Join"
+text = "Sonido"
+
+[node name="salir" type="Button" parent="PantallaInicio/Control/VBoxContainer"]
+layout_mode = 2
+text = "Salir"
+
+[node name="PanelCoop" type="Panel" parent="PantallaInicio/Control"]
+visible = false
+layout_mode = 0
+offset_left = -206.0
+offset_top = 21.0
+offset_right = 208.0
+offset_bottom = 123.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control/PanelCoop"]
+layout_mode = 0
+offset_right = 421.0
+offset_bottom = 145.0
+
+[node name="Crear" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer"]
+layout_mode = 2
+text = "Crear"
+
+[node name="Unirse" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer"]
+layout_mode = 2
+text = "Unirse"
+
+[node name="Volver" type="Button" parent="PantallaInicio/Control/PanelCoop/VBoxContainer"]
+layout_mode = 2
+text = "Volver"
+
+[node name="PanelOpciones" type="Panel" parent="PantallaInicio/Control"]
+visible = false
+layout_mode = 0
+offset_left = -208.0
+offset_top = 23.0
+offset_right = 212.0
+offset_bottom = 90.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PantallaInicio/Control/PanelOpciones"]
+layout_mode = 0
+offset_right = 419.0
+offset_bottom = 105.0
+
+[node name="Sonidos" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer"]
+layout_mode = 2
+text = "Sonidos"
+
+[node name="Musica" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer"]
+layout_mode = 2
+text = "Musica"
+
+[node name="volver" type="Button" parent="PantallaInicio/Control/PanelOpciones/VBoxContainer"]
+layout_mode = 2
+text = "volver"
 
 [node name="Estamina" parent="." instance=ExtResource("7_chvf1")]
 anchors_preset = 0
@@ -317,5 +375,13 @@ transform = Transform3D(-20.9344, 0, 43.0088, 0, 15.4539, 0, -56.5385, 0, -15.92
 [node name="rock_3-convcol6" parent="Rocas" instance=ExtResource("9_amk0r")]
 transform = Transform3D(4.99397, -2.80825, 0, 1.61946, 8.65987, 0, 0, 0, 6.39003, 176.973, 114.449, -62.7232)
 
-[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_multijugador_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Jugar" to="." method="_on_jugar_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Jugar" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/Sonido" to="." method="_on_sonido_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/salir" to="." method="_on_salir_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/PanelCoop/VBoxContainer/Crear" to="." method="_on_crear_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/PanelCoop/VBoxContainer/Unirse" to="." method="_on_unirse_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/PanelCoop/VBoxContainer/Volver" to="." method="_on_volver_pressed"]
+[connection signal="pressed" from="PantallaInicio/Control/PanelOpciones/VBoxContainer/volver" to="." method="_on_volver_pressed"]
