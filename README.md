@@ -44,6 +44,17 @@ Ya sea que juegues solo o con un amigo, cada ascenso pone a prueba tus habilidad
 
 ---
 
+## Trailer del juego
+
+<div align="center">
+    <a href="./docs/video/trailer_1.mp4" rel="noopener">
+        <img src="./docs/img/trailer_1.gif" alt="banner-Trailer" width="600">
+    </a>
+    <a href="./docs/video/trailer_2.mp4" rel="noopener">
+        <img src="./docs/img/trailer_2.gif" alt="banner-Trailer" width="600">
+    </a>
+</div>
+
 ## 🎮 Cómo Jugar
 
 ### Controles
@@ -77,9 +88,16 @@ El juego participa _DevJam_ organizada por el CITT de San Bernardo, en la catego
 > [!NOTE]
 > Pitch descargable en formato PDF: [Pitch_Climb_Together.pdf](docs\pdf\Pitch_Climb_Together.pdf)
 
+
+<div align="center">
+
 ### CLIMB TOGETHER
 
 "Una aventura donde la verdadera altura se mide en equipo"
+
+<img src="./docs/img/trailer_banner.png" alt="banner-Trailer" width="600">
+
+</div>
 
 ¿Qué tal si mezclas el folclore chileno con la tensión de sobrevivir y para rematar, una marraqueta?
 
