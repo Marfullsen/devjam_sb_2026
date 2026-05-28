@@ -91,7 +91,7 @@ func _on_crear_pressed() -> void:
 
 func _on_unirse_pressed() -> void:
 
-	var error = peer.create_client("10.159.35.154", 1027)
+	var error = peer.create_client("localhost", 1027)
 
 	if error != OK:
 		print("Error conectando")

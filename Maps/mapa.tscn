@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dqpdwn6vexrv5" path="res://Players/player.tscn" id="2_dqhcp"]
 [ext_resource type="PackedScene" uid="uid://c5sgotdwy3428" path="res://Players/rope.tscn" id="3_874gp"]
 [ext_resource type="Texture2D" uid="uid://di0tnhfao1rew" path="res://Textures/rock_12-convcol_WhatsApp Image 2026-05-21 at 1.08.jpg" id="4_dqhcp"]
-[ext_resource type="PackedScene" uid="uid://dy6jod52jnisl" path="res://Modelos 3D/ggvuw8aw3i0w-LowTree/Tree low.FBX" id="5_0o7fn"]
+[ext_resource type="PackedScene" uid="uid://k4if0fg1su8j" path="res://Modelos 3D/ggvuw8aw3i0w-LowTree/Tree low.FBX" id="5_0o7fn"]
 [ext_resource type="PackedScene" uid="uid://yyups7fxwjos" path="res://Terrenos/rock_4.glb" id="5_f1eda"]
 [ext_resource type="Texture2D" uid="uid://dkqmy3r5tsm6k" path="res://Textures/menu.png" id="6_dqhcp"]
 [ext_resource type="PackedScene" uid="uid://cvg56gjhppvmq" path="res://HUD/estamina.tscn" id="7_chvf1"]
@@ -19,20 +19,12 @@
 [ext_resource type="PackedScene" uid="uid://cmklemkh4vcw2" path="res://Terrenos/rock_9-convcol.glb" id="15_0o7fn"]
 [ext_resource type="PackedScene" uid="uid://ddu7vwtidargl" path="res://Terrenos/rock_11-convcol.glb" id="17_874gp"]
 [ext_resource type="PackedScene" uid="uid://b6k7lv4813i2v" path="res://Terrenos/rock_10-convcol.glb" id="17_dqhcp"]
-[ext_resource type="ArrayMesh" uid="uid://jjnpg7g7mljd" path="res://Modelos 3D/61-low_poly_tree/low_poly_tree/Lowpoly_tree_sample.obj" id="20_imvdf"]
-[ext_resource type="PackedScene" uid="uid://cw4wj4errrfgy" path="res://Modelos 3D/low_poly_mountain_free.glb" id="21_imvdf"]
-[ext_resource type="ArrayMesh" uid="uid://dqko205h4l7r1" path="res://Modelos 3D/ggvuw8aw3i0w-LowTree/Tree low.obj" id="21_lm63o"]
+[ext_resource type="ArrayMesh" uid="uid://7i6dfxeg4ujb" path="res://Modelos 3D/61-low_poly_tree/low_poly_tree/Lowpoly_tree_sample.obj" id="20_imvdf"]
+[ext_resource type="PackedScene" uid="uid://fojnue3of1pn" path="res://Modelos 3D/low_poly_mountain_free.glb" id="21_imvdf"]
+[ext_resource type="ArrayMesh" uid="uid://dbx1rhru4w4vg" path="res://Modelos 3D/ggvuw8aw3i0w-LowTree/Tree low.obj" id="21_lm63o"]
 [ext_resource type="PackedScene" uid="uid://djbw8qtaw6xy4" path="res://Terrenos/rock_2.glb" id="22_lm63o"]
 [ext_resource type="PackedScene" uid="uid://cj5bu3pp1m6vj" path="res://Terrenos/rock_3.glb" id="23_kvvs3"]
-[ext_resource type="PackedScene" uid="uid://ccgwo0mvk8nxf" path="res://Terrenos/rock_5.glb" id="25_6ayv7"]
-[ext_resource type="PackedScene" uid="uid://crrkdvs2sef7h" path="res://Terrenos/rock_6.glb" id="26_8wvfb"]
-[ext_resource type="PackedScene" uid="uid://cj2cphattr0ho" path="res://Terrenos/rock_7.glb" id="27_blrfu"]
-[ext_resource type="PackedScene" uid="uid://bihn2dg2n80cy" path="res://Terrenos/rock_8.glb" id="28_ohcip"]
-[ext_resource type="PackedScene" uid="uid://216n8qwi0o06" path="res://Terrenos/rock_9.glb" id="29_hlgbb"]
-[ext_resource type="PackedScene" uid="uid://4h1udaj3oaoj" path="res://Terrenos/rock_10.glb" id="30_kpdo7"]
-[ext_resource type="PackedScene" uid="uid://c8mjbdidg5m7v" path="res://Terrenos/rock_11.glb" id="31_bv7xr"]
-[ext_resource type="PackedScene" uid="uid://cf77c1w5dj1q8" path="res://Terrenos/rock_12.glb" id="32_vhtax"]
-[ext_resource type="PackedScene" uid="uid://ouyq87h12vhc" path="res://Terrenos/rock_13.glb" id="33_7sd8o"]
+[ext_resource type="PackedScene" uid="uid://br8tkogo28gic" path="res://Terrenos/Flag.glb" id="25_6ayv7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a24vh"]
 albedo_texture = ExtResource("1_46we1")
@@ -901,35 +893,38 @@ transform = Transform3D(7.6304564, -0.109734304, 0.6811512, 0.16057323, 4.212113
 [node name="rock_3" parent="." unique_id=2029247734 instance=ExtResource("23_kvvs3")]
 transform = Transform3D(4.3931313, 0, 0, 0, 7.181698, 0, 0, 0, 3.9254136, 80.830605, -22.056984, -12.967196)
 
-[node name="rock_5" parent="." unique_id=1228058387 instance=ExtResource("25_6ayv7")]
+[node name="rock_5" parent="." unique_id=1228058387]
 transform = Transform3D(3.4420788, 0, 0, 0, 4.601898, 0, 0, 0, 5.2076564, 74.50963, 40.728218, -24.624077)
 
-[node name="rock_6" parent="." unique_id=1033256854 instance=ExtResource("25_6ayv7")]
+[node name="rock_6" parent="." unique_id=1033256854]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.7637, 0.08861351, -50.814804)
 
-[node name="rock_7" parent="." unique_id=622747768 instance=ExtResource("26_8wvfb")]
+[node name="rock_7" parent="." unique_id=622747768]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.918795, 0.08861351, -20.370716)
 
-[node name="rock_8" parent="." unique_id=1142519799 instance=ExtResource("27_blrfu")]
+[node name="rock_8" parent="." unique_id=1142519799]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.34035, 28.427599, 52.529175)
 
-[node name="rock_9" parent="." unique_id=693251569 instance=ExtResource("28_ohcip")]
+[node name="rock_9" parent="." unique_id=693251569]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.703936, 0.08861351, 3.6803827)
 
-[node name="rock_10" parent="." unique_id=1888062826 instance=ExtResource("29_hlgbb")]
+[node name="rock_10" parent="." unique_id=1888062826]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 74.84889, 45.204823, 78.12132)
 
-[node name="rock_11" parent="." unique_id=962493103 instance=ExtResource("30_kpdo7")]
+[node name="rock_11" parent="." unique_id=962493103]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96.13827, 96.49077, -83.4418)
 
-[node name="rock_12" parent="." unique_id=2134903369 instance=ExtResource("31_bv7xr")]
+[node name="rock_12" parent="." unique_id=2134903369]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.97215, 100.37294, 70.37388)
 
-[node name="rock_13" parent="." unique_id=1118873123 instance=ExtResource("32_vhtax")]
+[node name="rock_13" parent="." unique_id=1118873123]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.97462, 85.00843, -69.60563)
 
-[node name="rock_14" parent="." unique_id=501948085 instance=ExtResource("33_7sd8o")]
+[node name="rock_14" parent="." unique_id=501948085]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.105896, 83.25997, 30.708555)
+
+[node name="Flag" parent="." unique_id=309534676 instance=ExtResource("25_6ayv7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 375.22467, 287.15625, 3.1484985)
 
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="PantallaInicio/Control/VBoxContainer/multijugador" to="." method="_on_multijugador_pressed"]
